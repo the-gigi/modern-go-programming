@@ -83,9 +83,9 @@
 ## Iterations
 
 # Modularity
-	- Packaging
-	- Importing Packages
-	- Package Hygiene
+- Packaging
+- Importing Packages
+- Package Hygiene
 				
 # Go as a Multi-Paradigm Language
 

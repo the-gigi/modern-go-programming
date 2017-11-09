@@ -1,4 +1,8 @@
+frontmatter.txt
 overview.md
+mainmatter.txt
 chapter 1 - a violent introduction to go.md
 chapter 2 - get up and running.md
 chapter 3 - the go type system.md
+chapter 4 - foundation.md
+chapter 5 - modularity.md
