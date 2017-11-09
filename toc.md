@@ -1,6 +1,6 @@
 # Introduction
 
-# Chapter 1 - a Taste of Go
+# A Violent Introduction to Go
 
 ## Go playground
 - "Yeah, it works!" (instead of hello-word)		

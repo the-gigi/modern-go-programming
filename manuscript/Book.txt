@@ -1,3 +1,5 @@
-introduction.md
-toc.md
-chapter-1.md
+frontmatter.txt
+overview.md
+mainmatter.txt
+chapter1 - a violent introduction to go.md
+chapter1 - get up and running.md
