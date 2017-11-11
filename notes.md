@@ -2,12 +2,17 @@
 
 ## Why Go?
 
-
+https://blog.golang.org/8years
 
 ## Reference
 
-[The docs[(https://golang.org/doc/)
+[The docs](https://golang.org/doc/)
 [The spec](https://golang.org/ref/spec)
+
+[A Taste of Go](https://talks.golang.org/2014/taste.slide#1)
+
+
+
 
 
 ### Type System
@@ -52,7 +57,7 @@
 
 Go is opinianated. So am I. 
 
-- Warts	
+# Warts	
 	- No file scope names (except imports)
 		Python Zen - Namespaces are 
 	- Package names are resolved by the last component

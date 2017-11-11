@@ -6,3 +6,20 @@ chapter 2 - get up and running.md
 chapter 3 - the go type system.md
 chapter 4 - foundation.md
 chapter 5 - modularity.md
+chapter 6 - go as a multii-paradigm language
+chapter 7 - structured programming in go
+chapter 8 - functional programming in go
+chapter 9 - generic programming in go
+chapter 10 - advanced object-oriented design
+chapter 11 - industrial-strength testing
+chapter 12 - developing plugin-based-systems
+chapter 13 - concurrent programming in go
+chapter 14 - robust error handling
+chapter 15 - writing command-line tools in go
+chapter 16 - profiling go programs
+chapter 17 - database programming
+chapter 18 - writing grpc-based microservices
+chapter 19 - exposing graphql-based apis
+chapter 20 - dockerizing a go application
+chapter 21 - welcome to the future
+

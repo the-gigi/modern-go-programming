@@ -106,7 +106,7 @@
 # Functional Programming in Go
 	- Functions as first class citizens in Go
 	
-# Generic Programming
+# Generic Programming in Go
 	- Built-in generic containers
 	- The empty interface
 		- An interface is a pointer
@@ -172,25 +172,25 @@
 ### Go vs. Python
 - Go packages vs. Python namespaces
 	
-## Industrial-Strength Testing in Go
-### Unit Testing with the testing package
-### Code Coverage
-### BDD
-### Ginkgo and Gomega
-### Mocking
+# Industrial-Strength Testing in Go
+## Unit Testing with the testing package
+## Code Coverage
+## BDD
+## Ginkgo and Gomega
+## Mocking
 - With Interfaces
 - Replacing function variables
-### Integration Testing
-### System Testing
+## Integration Testing
+## System Testing
 - End to end testing
 - Performance Testing
 - Load Testing
 
-## Developing Plugin-Based Systems
-### Dynamic Plugins
-### Writing Plugins
-### Loading Plugins
-### Using Plugins	
+# Developing Plugin-Based Systems
+## Dynamic Plugins
+## Writing Plugins
+## Loading Plugins
+## Using Plugins	
 	
 # Concurrent Programming in Go
 ## CSP
@@ -201,7 +201,7 @@
 ## Race Detection
 ## The Go Memory Model
 
-# Error Handling
+# Robust Error Handling
 ## Multiple return values
     - Named return values
 ## The Error interface
@@ -223,8 +223,16 @@
     
 ## Is it possible to emulate exception handling with Go?
 	
-# Writing Command-Line Tools
+# Writing Command-Line Tools in Go
+- cmd directory
 - Flags
+
+# Profiling Go programs
+- pprof
+- cpu profiling
+- memory profiling
+- visualizing
+- flam graphs
 
 # Database Programming
 ## Working with Relational Databases
@@ -234,12 +242,12 @@
 ## Working with NoSQL Databases
 - Etcd3
 
-# Writing GRPC-Based Microservices
+# Writing gRPC-Based Microservices
 ## Quick Introduction to GRPC
-## Why GRPC?
-## GRPC Proto Files 
+## Why gRPC?
+## gRPC Proto Files 
 ## Designing and implementing the GRPC Service
-## Consuming GRPC
+## Consuming gRPC
 
 # Exposing GraphQL-Based APIs 
 ## Quick Introduction to GraphQL
