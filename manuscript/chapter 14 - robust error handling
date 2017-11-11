@@ -1,7 +1,10 @@
 # Robust Error Handling
+
 ## Multiple return values
     - Named return values
+
 ## The Error interface
+
 ## No exceptions, except...
 - Panic
 - Defer
@@ -9,6 +12,7 @@
 
 ## Concurrent Error Handling
 - Error channel
+
 ## Checking for errors
 - Always assign the return values of a function
 - Use underscores to explicitly ignore irrelevant values

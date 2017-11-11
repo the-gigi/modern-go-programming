@@ -7,17 +7,25 @@
 
 ## Struct Embedding
 
+
 ### Unnamed Struct Field
+
 ### Poorman's Inheritance
+
 ### Multiple inheritance
+
 ### Pointer Embedding
 
 ## SOLID design in Go
 
 ### Single Responsibility Principle
+
 ### Open / Closed Principle
+
 ### Liskov Substitution Principle
+
 ### Interface Segregation Principle
+
 ### Dependency Inversion Principle
 
 ## Interfaces FTW
@@ -38,9 +46,12 @@
 
 ### Go vs. C
 - Go structs vs. C structs
+
 ### Go vs. C++
 - Go interfaces vs. struct with pure virtual functions
+
 ### Go vs. Java/C#
 - Go empty interface vs. Java/C# Object
+
 ### Go vs. Python
 - Go packages vs. Python namespaces
