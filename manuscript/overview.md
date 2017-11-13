@@ -71,8 +71,12 @@ I have life besides programming and writing (hard to believe I know). I live in 
 have a georgeous wife and three lovely children. I tried to infect them with programming too with pretty good results. Saar, my oldest son, is now a CS student and had a couple of contruct job as a software engineers. Guy, my youngest son, is now getting into game development using Python (after trying Lua). I even managed to persuade Liat, my wife, to learn some Python and SQL abd write some programs to automate Excell and SPSS. My only utter failure is Ophir, my daughter, who prefers animals to computers and is an animal science student at Cal Poli. 
 
 I used to play a lot of basketball and did Crossfit for several years. But, with great age come 
-great injuries and in the last 5 years my athletic outlet is Brazilian Jiu Jitsu that I train with 
+great injuries. In the last 5 years my athletic outlet is Brazilian Jiu Jitsu that I train with 
 my sons Saar and Guy.
+
+I also like playing board games with my family, friends and co-workers.
+
+Last but not least, I'm an obsessive reader and read lots of books (mostly Sci-Fi )and articles.
 
 ## Who Are You?
 
