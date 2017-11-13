@@ -87,7 +87,7 @@ beyond just school projects. You don't have to know anything about Go coming in 
 If you have a lot of professional exeprience programming in other mainstream languages like Python, 
 C++, Java or C# then you'll appreciate the comparisons I make throuout the book to other languages.  
 
-## Why Should you Read This Book?
+## Why Should you Read this Book?
 
 There are already several other Go books out there. But, "Modern Go Programming" is different. It
 is designed to be easy to learn, easy to use and provide value in real-world situations. I attack 
@@ -98,7 +98,7 @@ examples, in the contenxt of a large system.
 
 I start every topic at the conceptual level. This is very important for grounding
 
-### Compare to other languages
+### Compare to other Languages
 
 If you have experience in another language then concepts like iteration or pointers can be made 
 clear by comparing them to the concepts in a familiar language. Sometimes pointing out the 
@@ -139,7 +139,7 @@ rest of the book.
 I write this book on Github and you can participate opening issues, commenting and PRs. I welcome
 discussion and contributions.
 
-### No homework
+### No Homework
 
 You will not find the dreaded exercise toi the reader here! 
 
