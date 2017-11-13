@@ -84,15 +84,15 @@ Enough about me. What about you? You can be anyone of course, but when I write t
 in my mind a software developer who is enthusiastic about Go and has some programming experience 
 beyond just school projects. You don't have to know anything about Go coming in (except that it's cool and you want to know more). If you have little experience you can still benefit, but you may need to refer to some external sources to explain basic concepts that I'll just mention without detailed explanations (variables, conditionals, loops, etc).
 
-If you have a lot of professional exeprience programming in other mainstream languages like Python, 
-C++, Java or C# then you'll appreciate the comparisons I make throuout the book to other languages.  
+If you have a lot of professional experience programming in other mainstream languages like Python, 
+C++, Java or C# then you'll appreciate the comparisons I make throughout the book to other languages.  
 
 ## Why Should you Read this Book?
 
 There are already several other Go books out there. But, "Modern Go Programming" is different. It
 is designed to be easy to learn, easy to use and provide value in real-world situations. I attack 
 every subject from multiple angles: conceptual level, comparison to other languages, simple code
-examples, in the contenxt of a large system. 
+examples, in the context of a large system. 
 
 ### Concepts
 
@@ -121,7 +121,7 @@ collaborating services and data stores.
 Everything I write is based on direct experience, building large-scale systems. deployed in 
 production, evolving over years, in multi-developer teams. I'm not an academic and I'm not a 
 consultant brought in for a quick fix. I'm a full time software-architect working every day at the 
-code level on enterprise-grde software systems.   
+code level on enterprise-grade software systems.   
 
 ### Always Up to Date
 
@@ -141,12 +141,13 @@ discussion and contributions.
 
 ### No Homework
 
-You will not find the dreaded exercise toi the reader here! 
+You will not find the dreaded exercise to the reader here! 
 
 ## How is the Book Organized?
 
 The book is organized very simply. The first part up to and including chapter 6 introduces the Go 
 language, its basic features, its tooling and sets you up write simple Go programs. The second part
 is composed of chapters that cover some topic in depth. Some of the topics may have been covered 
-briefly earlier. The order is pretty arbitrary. Throughout the second part we will build the Delinkcious sample application together. 
+briefly earlier. The order is pretty arbitrary. Throughout the second part we will build the Delinkcious sample application together. Delinkcious is a Delicious-like link management 
+service that will help bring to life many of the topicsi nthe book in a real-world context. 
 
