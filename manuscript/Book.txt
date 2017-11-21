@@ -6,13 +6,13 @@ chapter 2 - get up and running.md
 chapter 3 - the go type system.md
 chapter 4 - foundation.md
 chapter 5 - modularity.md
-chapter 6 - go as a multii-paradigm language.md
+chapter 6 - go as a multi-paradigm language.md
 chapter 7 - structured programming in go.md
 chapter 8 - functional programming in go.md
 chapter 9 - generic programming in go.md
 chapter 10 - advanced object-oriented design.md
 chapter 11 - industrial-strength testing.md
-chapter 12 - developing plugin-based-systems.md
+chapter 12 - developing plugin-based systems.md
 chapter 13 - concurrent programming in go.md
 chapter 14 - robust error handling.md
 chapter 15 - writing command-line tools in go.md
