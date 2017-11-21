@@ -21,7 +21,7 @@ func main() {
 }
 ``` 
 
-![Here is a screenshot](https://i.imgur.com/rGtqFzN.png):
+![Here is a screenshot](images/chapter-1/go_playground.png):
 
 
 The Go Playground runs on golang.org's servers. It is pretty spartan. There are other online Go environments if you want to experiment:
