@@ -28,7 +28,6 @@ I'm Gigi Sayfan. I've been developing software professionally for 22 years in do
 - Genomics and bioinformatics
 
 I wrote production code every day in many languages such as: 
-
 - Go
 - Python
 - C#, 
@@ -38,7 +37,8 @@ I wrote production code every day in many languages such as:
 - Delphi
 - Cobol(back in the day)
 
-The code I wrote that runs on:
+
+The code I wrote runs on:
 - Windows, 
 - Linux
 - macOS
@@ -92,11 +92,11 @@ C++, Java or C# then you'll appreciate the comparisons I make throughout the boo
 There are already several other Go books out there. But, "Modern Go Programming" is different. It
 is designed to be easy to learn, easy to use and provide value in real-world situations. I attack 
 every subject from multiple angles: conceptual level, comparison to other languages, simple code
-examples, in the context of a large system. 
+examples and in the context of a large system. 
 
 ### Concepts
 
-I start every topic at the conceptual level. This is very important for grounding
+I start every topic at the conceptual level. This is very important for grounding. When you have the concepts right the rest is easy. I also connect and link together larger themes in Go design and philosophy, which helps even more because it reveals consistent patterns. The reason for different design choices simply click. 
 
 ### Compare to other Languages
 
@@ -118,21 +118,16 @@ collaborating services and data stores.
 
 ### Real-World, From the Trenches Author
 
-Everything I write is based on direct experience, building large-scale systems. deployed in 
-production, evolving over years, in multi-developer teams. I'm not an academic and I'm not a 
-consultant brought in for a quick fix. I'm a full time software-architect working every day at the 
+Everything I write is based on direct experience, building large-scale systems, deployed in production, evolving over years, in multi-developer teams. I'm not an academic and I'm not a consultant brought in for a quick fix. I'm a full time software-architect working every day at the 
 code level on enterprise-grade software systems.   
 
 ### Always Up to Date
 
-I plan to keep this book up to date and extend it as the Go language evolves and new best practices 
-or technologies become popular.
+I plan to keep this book up to date and extend it as the Go language evolves and new best practices or technologies become popular.
 
 ### Docker
 
-To make sure, you can always try the code I will provide Docker images with all the necessary 
-dependencies and instructions how to run all the code. I'll update the Docker image along with the
-rest of the book.
+To make sure, you can always try the code I will provide Docker images with all the necessary dependencies and instructions how to run all the code. I'll update the Docker image along with the rest of the book.
 
 ### Github
 
@@ -145,9 +140,5 @@ You will not find the dreaded exercise to the reader here!
 
 ## How is the Book Organized?
 
-The book is organized very simply. The first part up to and including chapter 6 introduces the Go 
-language, its basic features, its tooling and sets you up write simple Go programs. The second part
-is composed of chapters that cover some topic in depth. Some of the topics may have been covered 
-briefly earlier. The order is pretty arbitrary. Throughout the second part we will build the Delinkcious sample application together. Delinkcious is a Delicious-like link management 
-service that will help bring to life many of the topicsi nthe book in a real-world context. 
+The book is organized very simply. The first part up to and including chapter 6 introduces the Go language, its basic features, its tooling and sets you up to write simple Go programs. The second part is composed of chapters that cover some topic in depth. Some of the topics may have been covered briefly earlier. The order is pretty arbitrary. Throughout the second part we will build the Delinkcious sample application together. Delinkcious is a Delicious-like link management service that will help bring to life many of the topicsi nthe book in a real-world context. 
 
