@@ -37,7 +37,7 @@ https://blog.golang.org/8years
 ### Performance
 
 [Profiling Go](http://www.integralist.co.uk/posts/profiling-go/)
-
+https://github.com/dgryski/go-perfbook
 
 ### Concurrency
 
@@ -56,20 +56,28 @@ https://blog.golang.org/8years
 ### Perofrmance
 
 https://rakyll.org/pprof-ui/
+https://github.com/dgryski/go-perfbook/blob/master/performance.md
 
 
 ### Writing Command-Line Tools in Go
 
 [termui](https://github.com/gizak/termui)
 
-### Writing GRPC-based Microservices in Go
+
+## gRPC
 
 [Generate .proto files from Go source code](https://github.com/src-d/proteus)
+
+[GO gRPC - Beyond the Basics](https://blog.gopheracademy.com/advent-2017/go-grpc-beyond-basics/)
+
+[Twirp - Alternative to gRPC](https://blog.twitch.tv/twirp-a-sweet-new-rpc-framework-for-go-5f2febbf35f)
+
 ### Welcome to the Future
 
 Go is opinianated. So am I. 
 
 # Warts	
+    - [Tons of useful gothas](http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/)
 	- No file scope names (except imports)
 		Python Zen - Namespaces are 
 	- Package names are resolved by the last component
@@ -81,6 +89,78 @@ Go is opinianated. So am I.
 	- [X doesn't implement Y method with pointer rceiver](https://stackoverflow.com/questions/40823315/go-x-does-not-implement-y-method-has-a-pointer-receiver)
 	
 	- time.Format is messed up: "01-02-2006 15:04:06 -07:00"
+	
+	- enum/constants/iota is messed up, especially json serialization
+	
+	- error shadowing requires var declaration inside scopes when err is declared outside.
+	
+## Enum json serialization
+
+```
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+)
+
+type EnumType int
+
+const (
+    Zero     EnumType = iota
+    One
+)
+
+
+type EnumContainer struct {
+    Name                string    `json:"name"`
+    Value               EnumType `json:"value"`
+}
+
+func (e *EnumType) UnmarshalJSON(data []byte) error {
+    var s string
+    err := json.Unmarshal(data, &s)
+    if err != nil {
+        return err
+    }
+
+    value, ok := map[string]EnumType{"Zero": Zero, "One": One}[s]
+    if !ok {
+        return errors.New("Invalid EnumType value")
+    }
+    *e = value
+    return nil
+
+}
+
+func (e *EnumType) MarshalJSON() ([]byte, error) {
+    value, ok := map[EnumType]string{Zero: "Zero", One:"One"}[*e]
+    if !ok {
+        return errors.New("Invalid EnumType value")
+    }
+    return json.Marshal(value)
+}
+
+
+func main() {
+    x := One
+    ec := EnumContainer{
+        "1111",
+        &x,
+    }
+    s, err := json.Marshal(ec)
+    if err != nil {
+        fmt.Printf("fail!")
+    }
+
+    var ec2 EnumContainer
+    err = json.Unmarshal(s, &ec2)
+
+    fmt.Println(ec2)
+    fmt.Println(*ec2.Value)
+}
+```
+	
 	
 [Should Go 2.0 support Generics](https://dave.cheney.net/2017/07/22/should-go-2-0-support-generics)
 
