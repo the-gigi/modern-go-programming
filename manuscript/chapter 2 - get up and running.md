@@ -155,7 +155,7 @@ Check out https://github.com/docker-library/docs/tree/master/golang for more opt
 
 ## Integrated Development Environments
 
-I was always a big fan of IDEs. Early in my career, I used Microsoft's Visual Studio for C/C++ development as well as C#. I've used NetBeans for a short stint of Java development. I've used JetBrains' PyCharm for Python development for many years, and nowadays I use JetBrains Goland for Go development. But, Goland is not the only game in town. Visual Studio Code is a great Go IDE and has many followers. A lot of peopel just use text editors with various plugins. Ther are also several other IDEs that are less popular AFAICT.
+I was always a big fan of IDEs. Early in my career, I used Microsoft's Visual Studio for C/C++ development as well as C#. I've used NetBeans for a short stint of Java development. I've used JetBrains' PyCharm for Python development for many years, and nowadays I use JetBrains Goland for Go development. But, Goland is not the only game in town. Visual Studio Code is a great Go IDE and has many followers. A lot of people just use text editors with various plugins. There are also several other IDEs that are less popular.
 
 ### Goland
 
