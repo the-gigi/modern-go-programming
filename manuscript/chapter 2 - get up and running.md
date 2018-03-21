@@ -153,12 +153,47 @@ You may even use a hybrid approach where you run some programs natively and othe
 
 Check out https://github.com/docker-library/docs/tree/master/golang for more options. 	
 
-## Development Environments
+## Integrated Development Environments
 
-
+I was always a big fan of IDEs. Early in my career, I used Microsoft's Visual Studio for C/C++ development as well as C#. I've used NetBeans for a short stint of Java development. I've used JetBrains' PyCharm for Python development for many years, and nowadays I use JetBrains Goland for Go development. But, Goland is not the only game in town. Visual Studio Code is a great Go IDE and has many followers. A lot of peopel just use text editors with various plugins. Ther are also several other IDEs that are less popular AFAICT.
 
 ### Goland
+
+Goland is the JetBrains Go IDE. It doesn't get any better IMO. Unfortunately, there is no community edition. So, if you want to use it you have to pay for it (or have your company pay for it). Goland has all the bells and whistles: 
+
+- Project management
+- Super-powerful code editor
+- Lots of refactoring
+- Go tools integrations
+- Integrated testing including coverage
+- Integrated debugging
+
+But, it also has tons of other auxiliary features such as:
+
+- Strong source control integration
+- Built-in terminal
+- Docker and vagrant integration
+- Web development (HTML, CSS, Javascript)
+- Database tools 
+- Powerful git support
+- Markdown support
+- Lots of other plugins
+
+![Here is a screenshot of Goland](images/chapter-2/goland.png)
+
+
 ### Visual Studio Code
+
+I don't use [Visual Studio Code](https://code.visualstudio.com/) myself, but I know many people who swear by it. Since, Goland will cost you $$$ you may prefer Visual Studio Code as your Go IDE. What makes Visual Studio Code special? Here are a few tidbits:
+- It is based on [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework)), same as [Atom](https://en.wikipedia.org/wiki/Atom_(text_editor)), but it provides its own editor - [Monaco]()
+- It was voted developer environment tool in the 2018 StackOverflow survey with 34% of the votes
+- It was developed by Microsoft and released under the MIT license in 2015. The code is on [Github](https://github.com/Microsoft/vscode)
+
+
+
+![Here is a screenshot of Goland](images/chapter-2/visual-studio-code.png)
+
+
 ### Your favorite text editor	
 ### Other Go IDEs
 
@@ -183,9 +218,13 @@ Check out https://github.com/docker-library/docs/tree/master/golang for more opt
         vet         run go tool vet on packages	
     x/tools
 	
+https://godoc.org/golang.org/x/tools	
+	
 ## Organizing your Go code
 		
 ## Troubleshooting and debugging
  
-- Gogland Debugger 
-- Delve
+### Gogland Debugger 
+### Delve
+
+## Conclusion
