@@ -190,11 +190,15 @@ I don't use [Visual Studio Code](https://code.visualstudio.com/) myself, but I k
 - It was developed by Microsoft and released under the MIT license in 2015. The code is on [Github](https://github.com/Microsoft/vscode)
 
 
+![Here is a screenshot of Visual Studio Code](images/chapter-2/visual-studio-code.png)
 
-![Here is a screenshot of Goland](images/chapter-2/visual-studio-code.png)
+
+
+I > If you hold old-fashioned opinions about a monopolistic and proprietary Microsoft that spreads fear, uncertainty and doubt every which way, you may want to revise your views. Microsoft of late is an open source jaggernaut that contributes money and software to open source projects, develops its own core technologies in the open on github and interacts very actively with the open source community.   
 
 
 ### Your favorite text editor	
+
 ### Other Go IDEs
 
 ## Tooling
