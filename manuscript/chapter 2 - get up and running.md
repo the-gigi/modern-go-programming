@@ -103,21 +103,21 @@ If you're too lazy to click links, download files and type commands I got you. Y
 
 Here is a one-liner that builds and runs the yeah.go program inside a docker container given you have Docker installed.
 
-`docker run --rm -v "$PWD":/go/src/yeah -w /go/src/yeah golang:1.9 go run yeah.go`
+`docker run --rm -v "$PWD":/go/src/yeah -w /go/src/yeah golang:1.10 go run yeah.go`
 
 Let's understand what's going on here by explaining each element:
 
 - docker run - the docker command that executes commands inside docker containers
 - -v "$PWD":/go/src/yeah - mounts the current directory on the host into the container at /go/src/yeah
 - -w /go/src/yeah - set the working directory inside the container
-- golang:1.9 - the Docker image to load (if not available locally it will be downloaded)
+- golang:1.10 - the Docker image to load (if not available locally it will be downloaded)
 - go run yeah.go - the command to execute inside the container
 
-The first time you run this command Docker will download the golang:1.9 image from the docker repository. The output should look like:
+The first time you run this command Docker will download the golang:1.10 image from the docker repository. The output should look like:
 
 ```
-Unable to find image 'golang:1.9' locally
-1.9: Pulling from library/golang
+Unable to find image 'golang:1.10' locally
+1.10: Pulling from library/golang
 3e17c6eae66c: Pull complete
 fdfb54153de7: Pull complete
 a4ca6e73242a: Pull complete
@@ -127,14 +127,14 @@ e19893b2f35c: Pull complete
 3b8a1a0cc426: Pull complete
 85a9bedd68ab: Pull complete
 Digest: sha256:57ef143775b37c6100d4be60ca0f9493e18c68cde3ea76c36a22f41857df11f4
-Status: Downloaded newer image for golang:1.9
+Status: Downloaded newer image for golang:1.10
 Yeah, it works!
 ```
 
 But, running the command again will be much more concise:
 
 ```
-> docker run --rm -v "$PWD":/go/src/yeah -w /go/src/yeah golang:1.9 go run yeah.go
+> docker run --rm -v "$PWD":/go/src/yeah -w /go/src/yeah golang:1.10 go run yeah.go
 Yeah, it works!
 ```
 
@@ -193,42 +193,383 @@ I don't use [Visual Studio Code](https://code.visualstudio.com/) myself, but I k
 ![Here is a screenshot of Visual Studio Code](images/chapter-2/visual-studio-code.png)
 
 
-
 I> If you hold old-fashioned opinions about a monopolistic and proprietary Microsoft that spreads fear, uncertainty and doubt every which way, you may want to revise your views. Microsoft of late is an open source jaggernaut that contributes money and software to open source projects, develops its own core technologies in the open on github and interacts very actively with the open source community.   
 
+### Your favorite text editor
 
-### Your favorite text editor	
+As you know Go was designed by old Unix graybeards. They definitely don't require you to use a flashy IDE to program in Go. You can program Go just fine with a plain text editor, use the Go tools from any command-line terminal and not miss a beat. Popular editors like vim, emacs and sublime text have their own Go mods and plugins as well as dedicated fans that refuse to look at Go code in any other environment.
 
 ### Other Go IDEs
 
+You can find a pretty comprehensive list of editors and other IDEs here:
+https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins
+
 ## Tooling
 
-    The go command		
-        build       compile packages and dependencies
-        clean       remove object files
-        doc         show documentation for package or symbol
-        env         print Go environment information
-        bug         start a bug report
-        fix         run go tool fix on packages
-        fmt         run gofmt on package sources
-        generate    generate Go files by processing source
-        get         download and install packages and dependencies
-        install     compile and install packages and dependencies
-        list        list packages
-        run         compile and run Go program
-        test        test packages
-        tool        run specified go tool
-        version     print Go version
-        vet         run go tool vet on packages	
-    x/tools
+As I mentioned earlier one of the strongest points of Go is its tooling. 
+
+### The Go Command
+
+In partiuclar the Go command is your gateway to a lot of goodness. Here is the output if you just type: `go`:
+
+
+    build       compile packages and dependencies
+    clean       remove object files
+    doc         show documentation for package or symbol
+    env         print Go environment information
+    bug         start a bug report
+    fix         run go tool fix on packages
+    fmt         run gofmt on package sources
+    generate    generate Go files by processing source
+    get         download and install packages and dependencies
+    install     compile and install packages and dependencies
+    list        list packages
+    run         compile and run Go program
+    test        test packages
+    tool        run specified go tool
+    version     print Go version
+    vet         run go tool vet on packages	
+
+    Use "go help [command]" for more information about a command.    
+
+Some of these commands you will use on a regular basis and some of them are more specialized. The `go tool` sub-command is like an escape hatch that allows you to run other more specialized tools. I'll dive into the `go tool` in a separte section.  
+
+
+#### Help
+
+If you want the nitty-gritty details on a Go command - type `go help <command>`. The same information is available on the web here: https://golang.org/cmd/go/.
+
+#### Build
+
+Build is a bread and butter command. You use it to build your code and dependencies into libraries and/or programs. Let's see it in action and build this little program:
+
+<<[tools_demo/main.go](code\chapter-2\src\tools_demo\main.go)
+
+To test inside a Docker container on my local machine I change directory to the to chapter-2 code directory and then type
+
+    docker run --rm -it -v "$PWD":/go -w /go/src/tools_demo golang:1.10 bash
+
+This command will drop in a nice inteactive session with GOPATH set to `/go` and in tools_demo working directory.
+
+Inside the container, let's verify only the main.go source program is present
+
+    root@b76610d4ea5c:/go/src/tools_demo# ls
+    main.go
+    
+Then run the `go build` command and see that the tools_demo executable was built
+
+    
+    root@b76610d4ea5c:/go/src/tools_demo# go build
+    root@b76610d4ea5c:/go/src/tools_demo# ls
+    main.go  tools_demo
+    
+Finally, we can run the tools_demo program
+    
+    root@b76610d4ea5c:/go/src/tools_demo# ./tools_demo
+    http://www.github.com is a valid url
+    https://www.golang.org is a valid url
+    blah://ftp.xyz.org is not a valid url
+
+This was a very minimal demo of how build works. There are many flags an options, but the documentation does a pretty good job at explaining them, so there's no point to rpeat it here.
+
+It's worth mentioning though that build relies on a standard Go directory structure that we will cover in detail later. If you follow a non-conventional structure for some reason (bad idea) then the build command will not work for you and you'll have to use lower level tools like `go tool compile` and `go tool link`.
+
+#### Clean
+
+Clean is very simple. It removes object and executable files from various directories. Go itself build most of these artifacts in temporary files, but the clean command can clean up remnants of other tools. Here is the list of directories and files:
+
+	_obj/            old object directory, left from Makefiles
+	_test/           old test directory, left from Makefiles
+	_testmain.go     old gotest file, left from Makefiles
+	test.out         old test log, left from Makefiles
+	build.out        old test log, left from Makefiles
+	*.[568ao]        object files, left from Makefiles
+
+	DIR(.exe)        from go build
+	DIR.test(.exe)   from go test -c
+	MAINFILE(.exe)   from go build MAINFILE.go
+	*.so             from SWIG
+
+
+Clean can remove installed files too if you provide the `-i` flag. To see what fiels are going to be cleaned up you can run it with the `-n` flag:
+
+    root@aa9372c02c02:/go/src/tools_demo# go clean -n
+    cd /go/src/tools_demo
+    rm -f tools_demo tools_demo.exe tools_demo.test tools_demo.test.exe main main.exe
+
+#### Doc
+
+Documentation in Go is very simple. You just write any comment above a package or a function and Go treats it like documentation. There are very few rules (e.g. urls are automatically converted to links). Here is an example:
+
+<<[urlutil package](code/chapter-2/src/urlutil/urlutil.go)
+
+The `go doc` command can display the documentation. If you're in the package directory you can just run it with no arguments
+
+```
+root@aa9372c02c02:/go/src/urlutil# go doc
+package urlutil // import "urlutil"
+
+Utility functions to works with URLs
+
+func IsReachable(url string) bool
+func IsValidUrl(url string) bool
+```
+
+As you can see only the the function signatures show up. The function comments are omitted. This is
+pretty annoying. You can see individual function comments by specifiyng the function name: 
+
+```
+root@b76610d4ea5c:/go/src/tools_demo# go doc urlutil.IsReachable
+func IsReachable(url string) bool
+    Try to get the headers from the target url.
+
+    See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD
+```
+
+Note that main packages (commands) require a special flag: `-cmd` if you want to display their documentation.
+
+There is also a `godoc` binary, which includes a web server and can serve locally the contents of godoc.org as well as your own package documentation.
+
+`godoc` can disply all function comments:
+
+```
+root@75aeb02ab0fb:/go/src/urlutil# godoc .
+PACKAGE DOCUMENTATION
+
+package urlutil
+    import "."
+
+    Utility functions to works with URLs
+
+FUNCTIONS
+
+func IsReachable(url string) bool
+    Try to get the headers from the target url.
+
+    See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD
+
+func IsValidUrl(url string) bool
+    Check if a url starts with http:// or https://
+```
+
+#### Env
+
+This simple command just displays various environment variables used by Go. Most of the time you 
+should only care about GOPATH (which I'll cover in detail).
+
+```
+root@75aeb02ab0fb:/go/src/urlutil# go env
+GOARCH="amd64"
+GOBIN=""
+GOCACHE="/root/.cache/go-build"
+GOEXE=""
+GOHOSTARCH="amd64"
+GOHOSTOS="linux"
+GOOS="linux"
+GOPATH="/go"
+GORACE=""
+GOROOT="/usr/local/go"
+GOTMPDIR=""
+GOTOOLDIR="/usr/local/go/pkg/tool/linux_amd64"
+GCCGO="gccgo"
+CC="gcc"
+CXX="g++"
+CGO_ENABLED="1"
+CGO_CFLAGS="-g -O2"
+CGO_CPPFLAGS=""
+CGO_CXXFLAGS="-g -O2"
+CGO_FFLAGS="-g -O2"
+CGO_LDFLAGS="-g -O2"
+PKG_CONFIG="pkg-config"
+GOGCCFLAGS="-fPIC -m64 -pthread -fmessage-length=0 -fdebug-prefix-map=/tmp/go-build486510450=/tmp/go-build -gno-record-gcc-switches"
+```
+
+If you want to know more about these environment variables type: `go help environment`.
+
+#### Bug
+
+The `go bug` let's you report bugs to the Go team. It opens your browser on Github with a bug report template that includes your Go environment (remember the `go env` command?).
+
+![Here is what it looks like](images/chapter-2/go_bug.png)
+
+Go at version 1.10 is pretty robust. I recommend that you ask around and verify you actually found 
+a bug before reporting.
+
+#### Fix
+
+The `go fix` command is pretty cool. It helps upgrading your code when a new version of Go updates 
+some package API. Go fix really embodies the tooling focus of the Go team. It relies on a strong tooling base of parsing Go source files into abstract syntax trees. This capability allows the Go designers a larger degree of freedom to make breaking changes if they know that `go fix` can automatically convert user's code to the new API. It was a life-saver pre 1.0.
+
+#### Fmt
+
+Formatting is a big deal for many people. So many flame wars started over where to place your curly braces and how to align your code. Check out this awesome segment from Silicon Valley about [tabs vs. spaces](https://www.youtube.com/watch?v=SsoOG6ZeyUI). Go puts a stop to it. There is standard formatting and there is a tool to format your code for you. In particular Go chose tabs over spaces, so Richard Hendrix won :-).
+
+Let's see `go fmt` in action. But, it's not omnipotent. The following code for example produces an error:
+
+```
+package fmt_fail_demo
+import  "fmt"
+
+func Foo()
+{
+  fmt.Println("foo")
+}
+```
+
+Go fmt can't handle the curly brace in a new line after `func Foo()`. Here is what happens:
+
+```
+root@d644ee323750:/go/src/fmt_fail_demo# go fmt
+fmt_demo_bad.go:5:1: expected declaration, found '{'
+exit status 2
+``` 
+
+Note that Goland can handle this particular formatting issue.
+
+OK. Let's see how `go fmt` works with valid Go code. Running `go fmt` on this code:
+
+```
+package fmt_demo
+import "fmt"
+func Foo() {
+  fmt.Println( 2 - 4 / 3 * 5  )
+}
+```
+
+Produces the following code with proper spacing between lines and in the paramaters to `fmt.Println()`:
+
+```
+package fmt_demo
+
+import "fmt"
+
+func Foo() {
+	fmt.Println(2 - 4/3*5)
+}
+```
+
+#### Generate
+
+The `go generate` command is designed to help with code generation. I'm a big fan of code generation and we'll do some hard-core code generation later in the book. But, I don't like `go generate`. It's false advertising. It doesn't generate anything! All it does is run an arbitrary command. Sure, you can use this command to generate code or do anything at all, but you'll have to remember to call `go generate` yourself (or add it to your build process). How does it work? You write a special comment in a Go file that can run any shell command whatsoever. Then, you run `go generate` and the command executes. That's it. If you actually want to generate code then you need to define your own templates, scan them, populate them with replacements values, etc. Instead of embedding the command that starts the whole process in a Go file that contains a special comment you can just call your comand directly in your build script.  
+
+Here is a quick example, where the command just print a greeting to the screen:
+
+```
+package generate_demo
+
+//go:generate echo "Hi there"
+```
+
+This is how you "execute it"
+
+```
+root@0339408136b2:/go/src/generate_demo# go generate
+Hi there
+```
+
+As you can see there is connection between the file that contains the `go:generate` comment and the command that is running. If you actually generate some new code you'll have to take of naming the generated files properly and make sure you don't confuse templates files, files that contain `go:generate` comments, but can also contain normal Go code and generated source files. I really don't see the value of `go:generate`.
+
+#### Get
+
+Enough ranting about `go generate`. The `go get` is super useful. This is how you install 3rd party libraries and commands into your Go environment. It's the equivalent of Python's `pip install`, Rust's `cargo install` and Ruby's `gem install`.
+It downloads the target package or command and installs it. For example, if I want to install one of my projects on github called multi-git I can type: `go get github.com/the-gigi/multi-git`. The project will be downloaded into the src directory and the executable installed into the bin directory. Here are the results: 
+
+```
+root@0339408136b2:/go/src# tree github.com
+github.com
+`-- the-gigi
+    `-- multi-git
+        |-- LICENSE
+        |-- README.md
+        `-- main.go
+
+2 directories, 3 files
+
+root@0339408136b2:/go/src# cd ../bin
+root@0339408136b2:/go/bin# ls
+multi-git
+``` 
+
+The multi-git program lets you perform git operations on multiple repos at the same time. If you're interested check out the README: https://github.com/the-gigi/multi-git/blob/master/README.md
+
+
+#### Install
+
+#### Test
+
+#### Version
+
+#### Vet
+
+
+### The Go Tool Command
+
+#### Add2line
+
+#### Api
+
+#### Asm
+
+#### Cgo
+
+#### Compile
+
+#### Cover
+
+#### Dist
+
+#### Doc
+
+#### Fix
+
+#### Link
+
+#### Nm
+
+#### Objdump
+
+#### Pack
+
+#### Pprof
+
+#### Trace
+
+#### Vet
+
+
+
+
+
+
+### The x/tools
 	
-https://godoc.org/golang.org/x/tools	
+https://github.com/golang/tools/	
 	
-## Organizing your Go code
+https://godoc.org/golang.org/x/tools
+
+- goimports
+- guru
+- cover
+
+https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit#	
+	
+## Organizing your Go Code
+
+One of the things that baffled me when I started to learn Go was how to organize my code. One file programs are easy. But, once you start working with multiple packages and throw in some third party dependencies things become much more complicated.
+
 		
-## Troubleshooting and debugging
+## Troubleshooting and Debugging
+
+OK. This is not a comprehensive troubleshooting guide. Whole books have been written on the subject. We will  
+
+### Low Tech
  
 ### Gogland Debugger 
+
 ### Delve
 
 ## Conclusion
+
+Go was designed with tooling, programmer and team productivity in mind. It shows. The Go experience is very smooth and uniform compared to other languages like Python and Ruby that started as little scripting languages and grew in fits and starts to accommodate the needs of large scale software development (or dare I say engineering). It's also enlightening to compare the uniformity of the Go ecosystem to the wild west of Javascript. Let's hope it stays this way (for Go). In areas like code organization that didn't have a lot of guidance from the desgin tean the community quickly came up with best practices.
+
+

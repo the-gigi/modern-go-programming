@@ -165,3 +165,73 @@ func main() {
 [Should Go 2.0 support Generics](https://dave.cheney.net/2017/07/22/should-go-2-0-support-generics)
 
 [Simplicity Debt Redux](https://dave.cheney.net)
+
+
+## Chapters
+
+### Chapter 1
+
+### Chapter 2
+
+https://blog.golang.org/godoc-documenting-go-code
+
+https://blog.golang.org/introducing-gofix
+
+https://golang.org/doc/code.html
+https://code.tutsplus.com/tutorials/lets-go-golang-code-organization--cms-27368
+
+
+### Chapter 3
+
+
+### Chapter 4
+
+
+### Chapter 5
+
+
+### Chapter 6
+
+
+### Chapter 7
+
+
+### Chapter 8
+
+
+### Chapter 9
+
+
+### Chapter 10
+
+### Chapter 11
+
+
+### Chapter 12
+
+
+### Chapter 13
+
+
+### Chapter 14
+
+
+### Chapter 15
+
+
+### Chapter 16
+
+
+### Chapter 17
+
+
+### Chapter 18
+
+
+### Chapter 19
+
+
+### Chapter 20
+
+
+### Chapter 21
