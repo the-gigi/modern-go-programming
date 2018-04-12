@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/the-gigi/modern-go-programming/manuscript/code/chapter-2/src/urlutil"
+	"urlutil"
 )
 
 func main() {

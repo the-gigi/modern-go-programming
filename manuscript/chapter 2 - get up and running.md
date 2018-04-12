@@ -249,7 +249,7 @@ To test inside a Docker container on my local machine I change directory to the 
 
     docker run --rm -it -v "$PWD":/go -w /go/src/tools_demo golang:1.10 bash
 
-This command will drop in a nice inteactive session with GOPATH set to `/go` and in tools_demo working directory.
+This command will drop in a nice inteactive session with GOPATH set to `/go` and in the tools_demo working directory.
 
 Inside the container, let's verify only the main.go source program is present
 
@@ -299,7 +299,7 @@ Clean can remove installed files too if you provide the `-i` flag. To see what f
 
 #### Doc
 
-Documentation in Go is very simple. You just write any comment above a package or a function and Go treats it like documentation. There are very few rules (e.g. urls are automatically converted to links). Here is an example:
+Documentation in Go is very simple. You just write any comment above a package or a function and Go treats it like documentation. You should start the comment with the name of the entity being documented. There are very few other rules (e.g. urls are automatically converted to links). Here is an example:
 
 <<[urlutil package](code/chapter-2/src/urlutil/urlutil.go)
 
@@ -309,7 +309,7 @@ The `go doc` command can display the documentation. If you're in the package dir
 root@aa9372c02c02:/go/src/urlutil# go doc
 package urlutil // import "urlutil"
 
-Utility functions to works with URLs
+Package urlutil contains utility functions to work with URLs
 
 func IsReachable(url string) bool
 func IsValidUrl(url string) bool
@@ -469,6 +469,29 @@ Hi there
 
 As you can see there is connection between the file that contains the `go:generate` comment and the command that is running. If you actually generate some new code you'll have to take of naming the generated files properly and make sure you don't confuse templates files, files that contain `go:generate` comments, but can also contain normal Go code and generated source files. I really don't see the value of `go:generate`.
 
+
+#### Install
+
+Go install builds your packages and copy them to the proper target. Regular packages go to $GOPATH/pkg and executables/commands (main packages) go to $GOPATH/bin.
+
+Here is how to install the tools_demo program and run it directly:
+
+```
+root@ce1c4654606d:/go/src/tools_demo# go install .
+root@ce1c4654606d:/go/src/tools_demo# ls /go/bin
+tools_demo
+root@ce1c4654606d:/go/src/tools_demo# tools_demo
+http://www.github.com is a valid url
+http://www.github.com is not reachable
+https://www.no-such-url-really.org is a valid url
+https://www.no-such-url-really.org is not reachable
+blah://ftp.xyz.org is not a valid url
+blah://ftp.xyz.org is not reachable
+```
+
+
+Once it's installed I just type `tools_demo` to run it because $GOPATH/bin in on my path.
+
 #### Get
 
 Enough ranting about `go generate`. The `go get` is super useful. This is how you install 3rd party libraries and commands into your Go environment. It's the equivalent of Python's `pip install`, Rust's `cargo install` and Ruby's `gem install`.
@@ -487,20 +510,36 @@ github.com
 
 root@0339408136b2:/go/src# cd ../bin
 root@0339408136b2:/go/bin# ls
-multi-git
-``` 
-
+multi-git 
+```
 The multi-git program lets you perform git operations on multiple repos at the same time. If you're interested check out the README: https://github.com/the-gigi/multi-git/blob/master/README.md
 
-
-#### Install
+Don't forget to define `MG_ROOT` and `MG_REPOS`!
 
 #### Test
 
+The `go test` command runs your tests. We have a massive chapter coming on testing, so I will not waste words here.
+
 #### Version
+
+The `go version` command simply prints the version of Go
+
+```
+root@0c60b4741c71:/go/src/tools_demo# go version
+go version go1.10 linux/amd64
+```
 
 #### Vet
 
+The vet command checks your code and finds various mistakes that are not compilation errors. The generated code is valid, but probably doesn't do what you intended. Here is an example of unreachable code that `go vet` finds and reports.
+
+<<(code/chapter-2/src/vet_demo/vet_demo.go)
+
+```
+root@0c60b4741c71:/go/src/vet_demo# go vet
+# vet_demo
+./vet_demo.go:9: unreachable code
+```
 
 ### The Go Tool Command
 

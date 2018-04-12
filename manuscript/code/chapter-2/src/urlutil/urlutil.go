@@ -1,4 +1,4 @@
-// Utility functions to works with URLs
+// Package urlutil contains utility functions to work with URLs
 package urlutil
 
 import (
@@ -7,12 +7,12 @@ import (
 	"time"
 )
 
-// Check if a url starts with http:// or https://
+// IsValid Url checks if a url starts with http:// or https://
 func IsValidUrl(url string) bool {
 	return strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://")
 }
 
-// Try to get the headers from the target url.
+// IsReachable tries to get the headers from the target url.
 //
 // See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD
 func IsReachable(url string) bool {
