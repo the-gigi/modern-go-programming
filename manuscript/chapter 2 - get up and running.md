@@ -179,8 +179,9 @@ But, it also has tons of other auxiliary features such as:
 - Markdown support
 - Lots of other plugins
 
+<!---
 ![Here is a screenshot of Goland](images/chapter-2/goland.png)
-
+-->
 
 ### Visual Studio Code
 
@@ -189,9 +190,9 @@ I don't use [Visual Studio Code](https://code.visualstudio.com/) myself, but I k
 - It was voted developer environment tool in the 2018 StackOverflow survey with 34% of the votes
 - It was developed by Microsoft and released under the MIT license in 2015. The code is on [Github](https://github.com/Microsoft/vscode)
 
-
+<!---
 ![Here is a screenshot of Visual Studio Code](images/chapter-2/visual-studio-code.png)
-
+-->
 
 I> If you hold old-fashioned opinions about a monopolistic and proprietary Microsoft that spreads fear, uncertainty and doubt every which way, you may want to revise your views. Microsoft of late is an open source jaggernaut that contributes money and software to open source projects, develops its own core technologies in the open on github and interacts very actively with the open source community.   
 
@@ -390,7 +391,9 @@ If you want to know more about these environment variables type: `go help enviro
 
 The `go bug` let's you report bugs to the Go team. It opens your browser on Github with a bug report template that includes your Go environment (remember the `go env` command?).
 
+<!---
 ![Here is what it looks like](images/chapter-2/go_bug.png)
+-->
 
 Go at version 1.10 is pretty robust. I recommend that you ask around and verify you actually found 
 a bug before reporting.
