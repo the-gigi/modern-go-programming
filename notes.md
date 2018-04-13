@@ -204,6 +204,9 @@ https://code.tutsplus.com/tutorials/lets-go-golang-code-organization--cms-27368
 
 ### Chapter 10
 
+https://crawshaw.io/blog/tragedy-of-finalizers
+https://crawshaw.io/blog/sharp-edged-finalizers
+
 ### Chapter 11
 
 
