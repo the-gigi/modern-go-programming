@@ -39,6 +39,10 @@
 - No methods
 - Fields may contain any object
 - Prefer primitive types, standard library types and interfaces
+
+## Finalizers
+
+
 ## Modeling your domain
 - Primary Entities - User, Link and Tag
 - Primary operations
