@@ -21,9 +21,7 @@ func main() {
 }
 ``` 
 
-<!---
 ![Here is a screenshot](images/chapter-1/go_playground.png):
--->
 
 The Go Playground runs on golang.org's servers. It is pretty spartan. There are other online Go environments if you want to experiment:
 
@@ -81,12 +79,13 @@ func main() {
     fmt.Println(result)
   }
 }
- 
-Output:
-	
-2
-Oh-oh, something is wrong. Can't divide 5.000000 by zero
 ```
+ 
+    Output:
+	
+    2
+    Oh-oh, something is wrong. Can't divide 5.000000 by zero
+
 
 #### Single Executable
 
@@ -116,7 +115,7 @@ Another pillar that makes Go special is its excellent tooling. The Go designers 
 
 To see what additional tools are available just run `go tool`:
 
-```Go
+```
 ~ > go tool
 addr2line
 api
