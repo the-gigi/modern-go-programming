@@ -179,20 +179,16 @@ But, it also has tons of other auxiliary features such as:
 - Markdown support
 - Lots of other plugins
 
-<!---
 ![Here is a screenshot of Goland](images/chapter-2/goland.png)
--->
 
 ### Visual Studio Code
 
 I don't use [Visual Studio Code](https://code.visualstudio.com/) myself, but I know many people who swear by it. Since, Goland will cost you $$$ you may prefer Visual Studio Code as your Go IDE. What makes Visual Studio Code special? Here are a few tidbits:
-- It is based on [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework)), same as [Atom](https://en.wikipedia.org/wiki/Atom_(text_editor)), but it provides its own editor - [Monaco]()
+- It is based on [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework)), same as [Atom](https://en.wikipedia.org/wiki/Atom_(text_editor)), but it provides its own editor - [Monaco](https://github.com/Microsoft/monaco-editor)
 - It was voted developer environment tool in the 2018 StackOverflow survey with 34% of the votes
 - It was developed by Microsoft and released under the MIT license in 2015. The code is on [Github](https://github.com/Microsoft/vscode)
 
-<!---
 ![Here is a screenshot of Visual Studio Code](images/chapter-2/visual-studio-code.png)
--->
 
 I> If you hold old-fashioned opinions about a monopolistic and proprietary Microsoft that spreads fear, uncertainty and doubt every which way, you may want to revise your views. Microsoft of late is an open source jaggernaut that contributes money and software to open source projects, develops its own core technologies in the open on github and interacts very actively with the open source community.   
 
@@ -244,7 +240,7 @@ If you want the nitty-gritty details on a Go command - type `go help <command>`.
 
 Build is a bread and butter command. You use it to build your code and dependencies into libraries and/or programs. Let's see it in action and build this little program:
 
-<<[tools_demo/main.go](code\chapter-2\src\tools_demo\main.go)
+<<[tools_demo/main.go](code/chapter-2/src/tools_demo/main.go)
 
 To test inside a Docker container on my local machine I change directory to the to chapter-2 code directory and then type
 
@@ -391,9 +387,7 @@ If you want to know more about these environment variables type: `go help enviro
 
 The `go bug` let's you report bugs to the Go team. It opens your browser on Github with a bug report template that includes your Go environment (remember the `go env` command?).
 
-<!---
 ![Here is what it looks like](images/chapter-2/go_bug.png)
--->
 
 Go at version 1.10 is pretty robust. I recommend that you ask around and verify you actually found 
 a bug before reporting.
@@ -409,7 +403,7 @@ Formatting is a big deal for many people. So many flame wars started over where 
 
 Let's see `go fmt` in action. But, it's not omnipotent. The following code for example produces an error:
 
-```
+``` go
 package fmt_fail_demo
 import  "fmt"
 
@@ -431,7 +425,7 @@ Note that Goland can handle this particular formatting issue.
 
 OK. Let's see how `go fmt` works with valid Go code. Running `go fmt` on this code:
 
-```
+``` go
 package fmt_demo
 import "fmt"
 func Foo() {
@@ -441,7 +435,7 @@ func Foo() {
 
 Produces the following code with proper spacing between lines and in the paramaters to `fmt.Println()`:
 
-```
+``` go
 package fmt_demo
 
 import "fmt"
