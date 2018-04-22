@@ -54,15 +54,13 @@ My technical expertise includes:
 - Unorthodox user interfaces
 - General software development life cycle.
 
-For me programming and software development are much more than just a job. It is my passion. I'm 
-constantly learning by playing with new technologies, writing articles and books. I started writing
-technical articles in [2001](http://www.drdobbs.com/a-quick-test-window-for-com/184416298) when 
-technical magazines were printed and I never stopped. You can find my articles here:
+For me programming and software development are much more than just a job. It is my passion. I'm constantly learning by playing with new technologies, writing articles and books. I started writing technical articles in [2001](http://www.drdobbs.com/a-quick-test-window-for-com/184416298) when technical magazines were printed and I never stopped. You can find my articles here:
 
 - [Dr. Dobbs](http://www.drdobbs.com/sitesearch?queryText=gigi+sayfan&type=site)
 - [DevX.com](https://www.google.com/search?q=gigi+sayfan+site%3Adevx.com)
 - [Compose.io](https://www.compose.com/articles/search/?s=gigi%20sayfan)
-- [TutsPlus.com](https://tutsplus.com/authors/gigi-sayfan) 
+- [TutsPlus.com](https://tutsplus.com/authors/gigi-sayfan)
+- [LogRecord]()
 
 I also recently wrote the book [Mastering Kubernetes](https://www.amazon.com/Mastering-Kubernetes-container-deployment-management/dp/1786461005). Check it out. 
 

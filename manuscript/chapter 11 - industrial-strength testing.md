@@ -1,4 +1,4 @@
-## Industrial-Strength Testing in Go
+## Industrial-Strength Testing in Go {#chapter-industrial-strength-testing}
 
 ### Unit Testing with the testing package
 

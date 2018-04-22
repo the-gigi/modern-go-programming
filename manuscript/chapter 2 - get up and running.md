@@ -540,42 +540,103 @@ root@0c60b4741c71:/go/src/vet_demo# go vet
 
 ### The Go Tool Command
 
-#### Add2line
+The go tool is a collection of less-used commands. You invoke them as `go tool <commands>`. Many of them are very low-level. Some of the more high-level commands like `doc`, `fix` and `vet` have been "promoted" and you can invoke them directly as "go <command>". I already discussed these commands. To see the documentation for a go tool command you use the standard go doc. 
 
-#### Api
+
+A> Note that while you need to add `tool` when invoking go tool commands, you don't need to mention tool when accessing the documentation. For example, you invoke the addr2line with `go tool addr2line`, but access the documentation with just `go doc addr2line`    
+
+#### Addr2line
+
+This super low-level command is intended to be used only by pprof (the Go profiler). You shouldn't 
+really use it under any circumstances. It takes a Go binary and an address and returns the function name, filename and line. Here is a quick example:
+
+```
+root@20a323dd2045:/go# echo 500000 | go tool addr2line tools_demo
+crypto/elliptic.p256OrdSqr
+/usr/local/go/src/crypto/elliptic/p256_asm_amd64.s:1134
+``` 
 
 #### Asm
 
+This is the Go assembler. Again, super low-level and outside the scope of the book. If you want to know more check out the [Quick Guide to Go's Assembler](https://golang.org/doc/asm).
+
 #### Cgo
 
-#### Compile
+The cgo command lets your Go code interact with C code. If you want to learn more check out https://golang.org/cmd/cgo/
 
+#### Compile and Link
+
+The compile and link commands can be used to build Go code in non-standard directory structure. The `go build` command follows some conventions. If you're a few spirit or need for some reason more fine-grained control on where your source files are located and where to put the artifacts then you can use compile and link.
+
+The compile command can generate object files or archives and even assembly code
+  
 #### Cover
+
+The cover command is use for test coverage. I'll cover the cover command (see what I did there?) in detail in [Industrial-Strength Testing in Go](#chapter-industrial-strength-testing)
 
 #### Dist
 
-#### Doc
+The dist command can helps with verfying and testing the Go distribution itself. It has several sub-commands:
 
-#### Fix
+```
+root@04eae1841051:~# go tool dist
+usage: go tool dist [command]
+Commands are:
 
-#### Link
+banner         print installation banner
+bootstrap      rebuild everything
+clean          deletes all built files
+env [-p]       print environment (-p: include $PATH)
+install [dir]  install individual directory
+list [-json]   list all supported platforms
+test [-h]      run Go test(s)
+version        print Go version
+
+All commands take -v flags to emit extra information.
+```
+
+There's is not reason for you to mess around with it.
 
 #### Nm
 
+The nm command was indespensible in my C++ days when I had various build and link issues due to missing symbols. It can tell you about symbols defined, used and most improtantly missing from an object file, archive or executable. I don't anticipate you'll have much use for nm if you just write Go without mixing in other languages.
+
 #### Objdump
+
+The objdump command disassembles Go binaries. It can display the source too if you add the -S flag. If the -s (lowercase) flag is provided the it will display only symbols matching the regular expression following -s. Here is some of the output of the following command: `# go tool objdump -S -s main tools_demo`
+
+```
+	for _, url := range urls {
+  0x5ec174		488b442458		MOVQ 0x58(SP), AX
+  0x5ec179		488d4810		LEAQ 0x10(AX), CX
+  0x5ec17d		488b442448		MOVQ 0x48(SP), AX
+  0x5ec182		48ffc0			INCQ AX
+  0x5ec185		4883f803		CMPQ $0x3, AX
+  0x5ec189		0f8df4010000		JGE 0x5ec383
+  0x5ec18f		4889442448		MOVQ AX, 0x48(SP)
+  0x5ec194		48894c2458		MOVQ CX, 0x58(SP)
+  0x5ec199		488b5108		MOVQ 0x8(CX), DX
+  0x5ec19d		4889542440		MOVQ DX, 0x40(SP)
+  0x5ec1a2		488b19			MOVQ 0(CX), BX
+  0x5ec1a5		48895c2450		MOVQ BX, 0x50(SP)
+	return len(s) >= len(prefix) && s[0:len(prefix)] == prefix
+  0x5ec1aa		4883fa07		CMPQ $0x7, DX
+  0x5ec1ae		0f8d93010000		JGE 0x5ec347
+  0x5ec1b4		31f6			XORL SI, SI
+  0x5ec1b6		4084f6			TESTL SI, SI
+``` 
 
 #### Pack
 
+The pack command is a simpler version of the Unix ar, used to package object files into archives. There is no reason you should ever use it. It's part of the low-level build tooling.
+
 #### Pprof
+
+The pprof command is used to profile your Go program. I dedicate a whole chapter to [profiling Go programs](#chapter-profiling-go-programs).
 
 #### Trace
 
-#### Vet
-
-
-
-
-
+The trace command can visualize what's going on with your program at a very fine-grained level. I will cover it in detail in [profiling Go programs](#chapter-profiling-go-programs).
 
 ### The x/tools
 	
@@ -586,6 +647,7 @@ https://godoc.org/golang.org/x/tools
 - goimports
 - guru
 - cover
+- [goreturns](https://github.com/sqs/goreturns)
 
 https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit#	
 	
