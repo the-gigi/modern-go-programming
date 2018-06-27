@@ -639,17 +639,66 @@ The pprof command is used to profile your Go program. I dedicate a whole chapter
 The trace command can visualize what's going on with your program at a very fine-grained level. I will cover it in detail in [profiling Go programs](#chapter-profiling-go-programs).
 
 ### The x/tools
-	
-https://github.com/golang/tools/	
-	
-https://godoc.org/golang.org/x/tools
 
-- goimports
-- guru
-- cover
-- [goreturns](https://github.com/sqs/goreturns)
+The [x/tools](https://godoc.org/golang.org/x/tools) are an additional set of tools that you need to install and provide
+additional useful capabilities. I'll mention a few I find especially beneficial, but feel free to explore all of them.
 
-https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit#	
+The repo is https://github.com/golang/tools/. Installation is as simple as `go get -u golang.org/x/tools/...`
+
+Some of these tools like `godoc` and `vet` are already included in Go distributions and I covered them earlier, so don't be surprised.
+
+### Go Imports
+
+Go imports scans your code, formats it properly like `go fmt` and also adds and removes imports (hence the name
+`go imports`). You can use it in a couple of situations:
+
+- Integrate it with your favorite editor if it's not integrated already
+- On your build and continuous integration server to fix issues with committed code
+- On each developer machine in a pre-commit hook
+- Ad-hoc when you look into random Go code that is not formatted properly.
+
+For goland, you may want to add a file watcher to run `go imports` automatically. Since, go imports does everything `gofmt` does and fixes your imports I highly recommend to use it instead of gofmt.
+
+
+### Guru
+
+The guru tool is designed for integration with editors and IDEs, but it can be useful if you want to dive deep into your
+code or get familiar with any large Go code base. It can answer questions like:
+
+- Where is this identifier declared?
+- Where are all the references to this declaration?
+- What are the fields and methods of this this expression?
+- What is the API of this package?
+- Which concrete types implement this interface?
+- What are the possible callees of this dynamic call?
+- What are the possible callers of this function?
+- Where might a value sent on this channel be received?
+
+Check out [Using Go Guru](https://docs.google.com/document/d/1_Y9xCEMj5S-7rv2ooHpZNH15JgRT5iM742gJkw5LtmQ/edit#) for more information
+
+### Cover
+
+The [cover](https://blog.golang.org/cover) tool provides a view of your test coverage. I will explore it further when discussing testing at large.
+But, in a few words test coverage means how much of your code is really covered by your tests. If your tests cover only 80% of your code then you might have bugs you don't know about in the 20% that is not tested.
+
+### Go Returns
+
+You don't have to limit yourself to standard tools of course. Go's tooling foucs means it is easier to write language-level tools. One such popular tool is [goreturns](https://github.com/sqs/goreturns). This tool calls `goimports` and then fixes your return statements by adding zero values for missing returns. This is can be especailly useful in combination with Go's explict error handling. It is very common to return a result and an error. When error occurs you typically return the zero value for the actual result and an error. With goreturns you can just return an error and it will take care of the rest. Here is a quick example:
+
+```
+```
+
+
+
+
+### Other Stuff
+
+There is also some random junk that doesn't really belong in a small language like Go. For example, there is a whole set of packages for writing and serving presentations, articles and blogs with its own special file format. I have no idea why it's here, but if you're curious you can check it out:
+
+- [blog](https://godoc.org/golang.org/x/tools/blog)
+- [html2article](https://godoc.org/golang.org/x/tools/cmd/html2article)
+- [https://godoc.org/golang.org/x/tools/cmd/present]
+
 	
 ## Organizing your Go Code
 
@@ -665,6 +714,8 @@ OK. This is not a comprehensive troubleshooting guide. Whole books have been wri
 ### Gogland Debugger 
 
 ### Delve
+
+### Logging
 
 ## Conclusion
 

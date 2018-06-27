@@ -2,8 +2,8 @@
 package urlutil
 
 import (
-	"strings"
 	"net/http"
+	"strings"
 	"time"
 )
 
