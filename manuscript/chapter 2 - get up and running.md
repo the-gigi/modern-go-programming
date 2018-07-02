@@ -683,12 +683,42 @@ But, in a few words test coverage means how much of your code is really covered 
 
 ### Go Returns
 
-You don't have to limit yourself to standard tools of course. Go's tooling foucs means it is easier to write language-level tools. One such popular tool is [goreturns](https://github.com/sqs/goreturns). This tool calls `goimports` and then fixes your return statements by adding zero values for missing returns. This is can be especailly useful in combination with Go's explict error handling. It is very common to return a result and an error. When error occurs you typically return the zero value for the actual result and an error. With goreturns you can just return an error and it will take care of the rest. Here is a quick example:
+You don't have to limit yourself to standard tools of course. Go's tooling foucs means it is easier to write language-level tools. One such popular tool is [goreturns](https://github.com/sqs/goreturns). This tool calls `goimports` and then fixes your return statements by adding zero values for missing returns. This is can be especailly useful in combination with Go's explict error handling. It is very common to return a result and an error. When error occurs you typically return the zero value for the actual result and an error. With goreturns you can just return an error and it will take care of the rest. Here is a quick example. The following file has several problems: indentation, unused "fmt" import and the fail() function returns just an error instead of string and int and an error.
 
 ```
+package main
+
+import (
+	"fmt"
+	"errors"
+)
+
+func fail() (string, int, error) {
+ return errors.New("FAIL!")
+}
+
+func main() {
+	fail()}
 ```
 
+Running goreturns fixes all the problems in one fell swoop:
 
+```
+root@907dc76c9526:/go/src/goreturns_demo# goreturns main.go
+package main
+
+import (
+	"errors"
+)
+
+func fail() (string, int, error) {
+	return "", 0, errors.New("FAIL!")
+}
+
+func main() {
+	fail()
+}
+```
 
 
 ### Other Stuff
@@ -704,10 +734,13 @@ There is also some random junk that doesn't really belong in a small language li
 
 One of the things that baffled me when I started to learn Go was how to organize my code. One file programs are easy. But, once you start working with multiple packages and throw in some third party dependencies things become much more complicated.
 
+
+
+
 		
 ## Troubleshooting and Debugging
 
-OK. This is not a comprehensive troubleshooting guide. Whole books have been written on the subject. We will  
+OK. This is not a comprehensive troubleshooting guide. Whole books have been written on the subject. I'll just cover briefly the main approaches and mention some great tools.
 
 ### Low Tech
  
