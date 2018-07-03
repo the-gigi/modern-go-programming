@@ -9,3 +9,5 @@ https://github.com/Masterminds/glide
 
 - Importing Packages
 - Package Hygiene
+- Vendoring
+- Versioning

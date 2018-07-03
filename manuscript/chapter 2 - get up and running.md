@@ -732,11 +732,81 @@ There is also some random junk that doesn't really belong in a small language li
 	
 ## Organizing your Go Code
 
-One of the things that baffled me when I started to learn Go was how to organize my code. One file programs are easy. But, once you start working with multiple packages and throw in some third party dependencies things become much more complicated.
+One of the things that baffled me when I started to learn Go was how to organize my code. One file programs are easy. But, once you start working with multiple packages and throw in some third party dependencies things become much more complicated.First thing first - Go code lives in workspaces. A workspace is just a directory with 3 subdirectories: src, pkg and bin. The root of the workspace must be in your GOPATH environment variable.
+
+### The $GOPATH/src directory
+
+The source code for your packages and remote packages you `go get` goes here. Remote packages come from a repositroy and the repository name (e.g. github.com) becomes a sub-dir and all the packages from that repository will be placed under the this sub-dir. I recommend that you keep your code in source control repo like Github or Gitlab and follow the same structure for your packages. Note that Go supports many source control
+
+
+### The $GOPATH/pkg directory
+
+The built libraries for your packages as well as remote packages go here. When you import a package, this is where Go is looking for it (I'll talk about vendoring later).
+
+### The $GOPATH/bin directory
+
+The artifact of main packages - the executables - go in this directory. $GOPATH/bin should be in your path, so you can run any executable that you built or got using `go get`
+
+### Quick Example - Fetching the Color package
+
+Let's get the [color](https://github.com/fatih/color) package:
+
+```
+root@907dc76c9526:/go# go get github.com/fatih/color
+```
+
+It landed in our GOPATH in two places the src dir and the pkg dir:
+
+```
+root@907dc76c9526:/go# tree src/github.com/fatih/color/ -L 1
+src/github.com/fatih/color/
+|-- Gopkg.lock
+|-- Gopkg.toml
+|-- LICENSE.md
+|-- README.md
+|-- color.go
+|-- color_test.go
+|-- doc.go
+`-- vendor
+
+root@907dc76c9526:/go# tree pkg/linux_amd64/
+tree [error opening dir]
+pkg/linux_amd64/
+`-- github.com
+    `-- fatih
+        `-- color.a
+```
+
+### Organizing Your Project
+
+OK. Now, that you understand the general structure and layout of Go workspaces how should you organize your project under the $GOPATH/src directory? There are several ways to go about it. First of all you may want to split your project into multiple repositories. Packages in these repositories can still import each other as remote package. But, even if you decide to use multiple repositories you will most likely have more than just one package in each repository. The following sections consider some options for the layout of repositories that contain multiple packages. A single package in a repository is just a private case.
+
+#### Basic Layout
 
 
 
 
+
+#### Advanced Layout
+
+#### Managing Dependencies and Versions
+
+
+
+
+
+### Managing Multiple Projects in One Workspace
+
+### Working with Multiple Workspaces
+
+There are two ways to work with multiple workspaces:
+
+1. Switch GOPATH to point to your active workspace
+2. Keep one GOPATH with multiple workspaces
+
+The first approach is cleaner and ensures that your workspaces are independent. The second approach (multiple workspaces in one GOPATH) allows sharing of dependencies since projects in each workspace will search for dependencies in the pkg sub-directory of each directory in the GOPATH. If youe GOPATH contains more than one workspace when you `go get` a package it goes into the first workspace.
+
+I personally, prefer one worspace per GOPATH. I have these little aliases that automatically switch GOPATH when I change directory to a workspace. I always navigate to a workspace root directory using these aliases and then I can roam inside the worspace as I please being sure that GOPATH is always correct.
 		
 ## Troubleshooting and Debugging
 

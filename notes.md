@@ -179,7 +179,10 @@ https://blog.golang.org/introducing-gofix
 
 https://golang.org/doc/code.html
 https://code.tutsplus.com/tutorials/lets-go-golang-code-organization--cms-27368
+https://talks.golang.org/2014/organizeio.slide
+https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2
 
+[How I use GOPATH with multiple workspaces](https://dmitri.shuralyov.com/blog/18)
 
 ### Chapter 3
 
