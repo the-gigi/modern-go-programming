@@ -783,19 +783,68 @@ OK. Now, that you understand the general structure and layout of Go workspaces h
 
 #### Basic Layout
 
+You can go super basic and just have a file with your main function in the project's root directory and other packages in sub-directories. But, the basic layout I recommend for anything beyond a toy project has the following directories:
+
+- pkg
+- cmd
+- vendor
+
+The `pkg` directory contains all the packages that are imported by other code internally or externally. Packages under `pkd` can't be run on their own. Note that packages may have deep directory structure. Don't confuse it with the $GOPATH/pkg directory. This is your project's `pkg' directory.`
+
+The `cmd` directory containa your applications and commands. Each application or command has its own sub-directory that contains a main package with a main() function. You can run them directly as well as `go get` them independently.
+
+The `vendor` directory contains your 3rd party dependencies. It is not strictly necessary since you `go get` all your 3rd party dependencies and they'll be available in your workspace, but  I recommend it for several reasons:
+
+- Your project is self-contained
+- Different projects in the same workspace can use different versions of the same dependency
+- The workspace pkg directory is not polluted with all the packages from all its projects
+
+Vendoring has its downsides too:
+
+- Wasted space if multiple projects use the same dependency
+- Need to upgrade dependencies for each project separately
+- If projects should use the exact dependency it needs to coordinated explicitly
+
+Overall, it's still worth it in most cases. You still have the option of not vendoring some shared dependency that need
+to be used by multiple project and just `go get` that dependency if you want.
+
+
+Here is a basic layout (without vendroign even) of an initial Delinkcious project. It has just one cmd and two packages:
+
+???????
+
 
 
 
 
 #### Advanced Layout
 
+An advacnced layout may be a good idea in large projects that have a lot of code and need more structure. There isn't much to it except that that are more direcotries for different types of files. Feel free to let your creativity loose. A good starting point is the Golang standards' [project layout](https://github.com/golang-standards/project-layout). It is a little heavy handed for my taste.
+
+Another source of inspiration can be large and successful open-source Go projects like Kubernetes or Etcd.
+
+#### Internal Packages
+
+Go 1.4 introduced the concept of internal packages. You can stick an `internal` directory at any level of the package hierarchy and only code under the immediate parent directory of the internal directory will be able to import packages inside the internal directory. For example, consider the following hierarchy:
+
+
+`1/2/internal/3/4/5`
+
+The packages 3, 4 and 5 are internal. Package 2 can import packages 3, 4 or 5. Packages 3, 4 and 5 can import each other because they are under the same internal directory and visible to each other. But, package 1 can only import package 2. Packages 3, 4 and 5 are sealed from package 1.
+
+If package 1 tries to import from an internal package it will get the following error:
+
+```
+main.go:6:2: use of internal package not allowed
+```
+
 #### Managing Dependencies and Versions
 
-
-
-
+Managing dependencies and their versions is critical. Go applications often depend on a lot of open-source code that changes rapidly. If you use the `vendor` directory then you can pin the version of each directory. If you don't then you'll have to carefully manage what is installed in your $GOPATH/pkg. I will discuss versioning in depth later. The recent Go versioning work (vgo) provides a promising path forward.
 
 ### Managing Multiple Projects in One Workspace
+
+You manage multiple projects in one workspace. Each project can have its own git repository and they depend on each other or not. If the projects depend on each other then you should consider if the dependency should be considered like other third party dependencies or if the projects are developed in tandem.
 
 ### Working with Multiple Workspaces
 
@@ -813,12 +862,34 @@ I personally, prefer one worspace per GOPATH. I have these little aliases that a
 OK. This is not a comprehensive troubleshooting guide. Whole books have been written on the subject. I'll just cover briefly the main approaches and mention some great tools.
 
 ### Low Tech
- 
-### Gogland Debugger 
+
+The low-tech approach is to sprinkle your code with print statements A.K.A printf-debugging whenever you need to troubleshoot something and remove those print statments later. It is very easy to add a bunch of print statements, but it has some serious deficiencies:
+
+- You can't always see the console output (remote server)
+- The output of the program need to be parsed and can't be polluted with devug statements
+- There is a lot of output and your debug statements are hard to find and separate
+- Every time you add a new print statement you need to build, deploy and run a new version of the code
+- Cleaning up is a chore. You can forget some print statements in and it requires yet another build and deploy cycle.
+- Concurrent code will mess up your print statements
+
+### Goland Debugger
+
+The Goland debugger is great for interactive debugging. The engine is the Delve debugger, but the integration with the Goland UI is very slick. You can define debug configurations, control the environment, set breakpoints (including conditional breakpoints), step, run and continue and observe the state of your program at each point. Goland offers also remote debugging, Docker and Vagrant integration. I use the debugger a lot when developing new code or when writing new tests for existing code.
+
 
 ### Delve
 
+Delve is a powerful Go debugger that can be used on its own or integrated with Goland as mentioned, but also with Visual Studio Code.
+
+
 ### Logging
+
+Print statements are good for quick and dirty troubleshooting of local code. Interactive debugging is great, but is not applicable in many cases. Logging is the big brother of print statements. Every serious system depends on logging to understand what's going when things go south. Logging can be configured to go to different or even multiple destinations such standard output/error, files, remote logging services. Log files can be rotated to alleviate disk pressure. Typically, log statements will have some common structure or format and may include process id. name and timestamp that will help later when parsing the logs. In distributed systems, it is best practice to collect logs from all the hosts and send to a central log repository where they can be sliced and diced.
+
+### Error reporting
+
+Logging is great, but when errors happen you should capture it and report it using dedicated error service that can record at least the location (filename and line) and the stack trace. Even better if you can record the state of the program when the error happened.
+
 
 ## Conclusion
 
