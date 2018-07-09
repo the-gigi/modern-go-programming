@@ -809,13 +809,21 @@ Overall, it's still worth it in most cases. You still have the option of not ven
 to be used by multiple project and just `go get` that dependency if you want.
 
 
-Here is a basic layout (without vendroign even) of an initial Delinkcious project. It has just one cmd and two packages:
+Here is a basic layout (without vendoring even) of an initial Delinkcious project. It has just one cmd and two packages:
 
-???????
-
-
-
-
+```
+root@b5be440670bb:/go/src/gitlab.com/the-gigi/delinkcious# tree
+.
+|-- cmd
+|   `-- delinkcious
+|       `-- main.go
+`-- pkg
+    |-- core
+    |   `-- core.go
+    `-- object_model
+        |-- interfaces.go
+        `-- structs.go
+```
 
 #### Advanced Layout
 
