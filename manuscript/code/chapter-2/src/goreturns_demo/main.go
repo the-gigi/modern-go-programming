@@ -1,13 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 func fail() (string, int, error) {
- return errors.New("FAIL!")
+	return errors.New("FAIL!")
 }
 
 func main() {
-	fail()}
+	fail()
+}
