@@ -667,6 +667,84 @@ The last important detail about maps is that they are not safe for concurrent up
 
 ### Interfaces
 
+An interface is a set of methods. Any object that implement these methods is said to satisfy the interface can be used anywhere the interface is needed. There is no "implements" or "extendeds" or sub-classing syntax. This quite unusual and maybe even unique in a strongly typed language. Here is a little program that demonstrates these concepts. The Drawer interface has a single method called Draw() that takes no arguments and returns a bool. The Account, Artist and PacifistGunslinger are structs that has a method that matches the Draw() method of the interface, so they are type compatible with it. In the main() function the drawers slice is initialized with instanced of all struct and then the code iterates twice through the drawers slice and invokes the Draw() method polymorphically.
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+
+type Drawer interface {
+	Draw() bool
+}
+
+type Account struct {
+	balance int
+}
+
+func (a *Account) Draw() bool {
+	if a.balance > 0 {
+		a.balance = 0
+		return true
+	}
+
+	return false
+}
+
+func (a *Account) Deposit(int amount) int {
+	a.balance += amount
+
+	return a.balance
+}
+
+type Artist struct {
+}
+
+func (a *Artist) Draw() bool {
+	return true
+}
+
+func (a *Artist) Sculpt() bool {
+	return true
+}
+
+type PacifistGunslinger struct {
+}
+
+func (pg *PacifistGunslinger) Draw() bool {
+	return false
+}
+
+
+func main() {
+	drawers := []Drawer{&Account{balance: 5}, &Artist{}, &PacifistGunslinger{}}
+	for _, d := range drawers {
+		fmt.Println(d.Draw())
+	}
+	fmt.Println("---------")
+	for _, d := range drawers {
+		fmt.Println(d.Draw())
+	}
+}
+
+Output:
+
+true
+true
+false
+---------
+false
+true
+false
+```
+
+Note that Account, Artist and PacifictGunslinger didn't indicate in any way that they implement the interface. It all happens inplicitly. If we follow this logic and consider the empty interface "interface{}" then every object is compatible with it because each object implements all zero methods of this intterface :-). It may sound funny, but it's an important and useful part of the Go type system. The empty interface is similar to the void pointer in C/C++, System.Object in C# or java.lang.Object in Java in the sense that any object is compatible with it. But note that the C# and Java objects come with a lot of built-in functionality while the Go empty interface is really empty.
+
+I'll talk a lot more about interfaces in `Chapter 10 - Advanced Object-Oriented Design`
+
 ### Structs
 
 ### Functions
