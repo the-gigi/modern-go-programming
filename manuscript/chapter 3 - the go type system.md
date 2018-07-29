@@ -401,10 +401,156 @@ As you can see backing arrays never shrink. As long as some slice is pointing to
 
 ### Bytes, Runes and Strings
 
+Bytes, runes, and strings are the building blocks of text processing in Go.
+
+#### Bytes
+
+Bytes are 8-bit numbers. Each byte can represent one of a possible 256 values (2 to the power of 8). Each character in the ASCII character set can be represented by a single byte. But bytes are not characters. The reason is that Go as a modern language supports Unicode, where there are way more than 256 separate characters. Enter runes.
+
+#### Runes
+
+A rune in Go is another name for the int32 type. This means that each rune can represent more than four billion separate values (2 to the power of 32), which is good enough to cover the entire Unicode character set.
+
+In the following code you can see that the rune '∆' (alt-J on the Mac) is just an int32. To print the character it represents to the screen, I have to convert it to a string.
+
+```
+package main
+
+import (
+    "fmt"
+)
 
 
+func main() {
+    r := '∆'
+    fmt.Println(r)
+    fmt.Println(int32(r))
+    fmt.Println(string(r))
+}
+
+Output:
+
+8710
+8710
+∆
+```
+
+Unicode is complicated. A rune officially represents a Unicode code point. Unicode characters are usually represented by a single Unicode code point, but sometimes more than one. This means some Unicode characters will require more than one rune.
+
+### Strings
+
+Strings are officially just read-only slices of bytes. If you index a string, you get a byte back:
+
+```
+func main() {
+    s := "abc"
+    for i := 0; i < len(s); i++ {
+        fmt.Println(s[i])
+    }
+}
+
+Output:
+
+97
+98
+99
+```
+
+String literals are a sequence of UTF-8 characters enclosed in double quotes. They may contain escape sequences, which are a backslash followed by an ASCII character such as \n (newline) or \t (tab). Each escape sequence has a special meanings. Here is the full list:
+
+```
+\a   U+0007 alert or bell
+\b   U+0008 backspace
+\f   U+000C form feed
+\n   U+000A line feed or newline
+\r   U+000D carriage return
+\t   U+0009 horizontal tab
+\v   U+000b vertical tab
+\\   U+005c backslash
+\'   U+0027 single quote  (valid only within rune literals)
+\"   U+0022 double quote  (valid only within string literals)
+```
+
+Sometimes you may want to store literal bytes directly in a string, regardless of escape sequences. You could escape each backslash, but that's tedious. A much better approach is to use raw strings that are enclosed in backticks.
+
+Here is an example of a string with a \t (tab) escape sequence, which is represented once as is, then with the backslash escape, and then as a raw string:
+
+```
+func main() {
+    s1 := "1\t2"
+    s2 := "1\\t2"
+    s3 := `1\t2`
+
+    fmt.Println(s1)
+    fmt.Println(s2)
+    fmt.Println(s3)
+}
+
+Output:
+
+1    2
+1\t2
+1\t2
+```
+While strings are slices of bytes, when you iterate over a string with a for-range statement, you get a rune in each iteration. This means you may get one or more bytes. This is easy to see with the for-range index. Here is a crazy example. The Hebrew word "שלום" means "Hello" (and peace). Hebrew is also written right to left. I'll construct a string that mixes the Hebrew word with its English translation.
+
+Then, I'll print it rune by rune, including the byte index of each rune within the string. As you'll see, each Hebrew rune takes two bytes, while the English characters take one byte, so the total length of this string is 16 bytes, even though it has four Hebrew characters, three symbols, and five English characters (12 characters). Also, the Hebrew characters will be displayed from right to left:
+
+```
+func main() {
+    hello := "שלום = hello"
+    fmt.Println("length:", len(hello))
+    for i, r := range(hello) {
+        fmt.Println(i, string(r))
+    }
+}
+
+Output:
+
+length: 16
+0 ש
+2 ל
+4 ו
+6 ם
+8
+9 =
+10
+11 h
+12 e
+13 l
+14 l
+15 o
+```
+
+When printing strings and byte slices, there are several format specifiers that work the same on both. The %s format prints the bytes as is, %x prints two lowercase hexadecimal characters per byte, %X prints two uppercase hexadecimal characters per byte, and %q prints a double quoted string escaped with go syntax.
+
+To escape the % sign inside a format string specifier, just double it. To separate the bytes when using %x or %X, you can add a space, as in "% x" and "% X". Here is the demo:
+
+```
+func main() {
+    s := "שלום"
+
+    fmt.Printf("%%s format:  %s\n", s)
+    fmt.Printf("%%x format:  %x\n", s)
+    fmt.Printf("%%X format:  %X\n", s)
+    fmt.Printf("%% x format:  % x\n", s)
+    fmt.Printf("%% X format:  % X\n", s)
+    fmt.Printf("%%q format:  %q\n", s)
+}
+
+Output:
+
+%s format:  שלום
+%x format:  d7a9d79cd795d79d
+%X format:  D7A9D79CD795D79D
+% x format:  d7 a9 d7 9c d7 95 d7 9d
+% X format:  D7 A9 D7 9C D7 95 D7 9D
+%q format:  "שלום"
+```
 
 ### Maps
+
+
 
 ### Interfaces
 
