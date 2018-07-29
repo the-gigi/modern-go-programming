@@ -550,7 +550,120 @@ Output:
 
 ### Maps
 
+Go maps are associative arrays implemented as hash tables that store keys and values/ They are similar to the Python dictionary, C++ std::hash, Javascript object, C# System.Collections.Hashtable and Ruby Hash.
 
+
+The map is another special generic data structure in Go. Keys nust be of a [comparable type](https://golang.org/ref/spec#Comparison_operators) and values can be of any type. Here are a few examples:
+
+```
+var m map[int]string // nil map, assignment will panic
+var m map[int]string = make(map[int]string) // empty map, assignment is valid
+m := make(map[int]string) // ditto, but more concise
+m := map[int]string{} // ditto, but even more concise
+```
+
+You can assign map literals to variables and you can assign individual keys. Here's how:
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	m := map[int]string{1: "one", 2: "two"}
+	fmt.Println(m)
+	m[3] = "three"
+	fmt.Println(m)
+}
+
+Output:
+
+map[1:one 2:two]
+map[1:one 2:two 3:three]
+```
+
+Once you have a non-nil map you can do lookups by key. If a key doesn't exist you just get the zero value:
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+
+	colors := map[string][3]byte{"red": [3]byte{255, 0, 0}, "green": [3]byte{0, 255, 0}}
+
+	fmt.Println("red:", colors["red"])
+	fmt.Println("green:", colors["green"])
+	fmt.Println("blue:", colors["blue"])
+}
+
+Output:
+
+red: [255 0 0]
+green: [0 255 0]
+blue: [0 0 0]
+```
+
+This can obviously be a problem. If the zero value is a valid value (in this case 0,0,0 is the RGB for black) you can't tell when you get the zero value if the key you is really in the map or missing.
+
+For those ocassions, Go provides a multi-value return for the lookup where the second value if a boolean that is true if the key exist and false otherwise:
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	colors := map[string][3]byte{"red": [3]byte{255, 0, 0}, "green": [3]byte{0, 255, 0}}
+	rgb, exist := colors["blue"]
+	if exist {
+		fmt.Println("blue:", rgb)
+	} else {
+		fmt.Println("blue is missing")
+	}
+}
+
+Output:
+
+blue is missing
+```
+
+You can iterate over maps with a for-range loop, which is very convenient:
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	colors := map[string][3]byte{"red": [3]byte{255, 0, 0}, "green": [3]byte{0, 255, 0}}
+	for color, rgb := range colors {
+		fmt.Println(color, "=>", rgb)
+	}
+}
+
+Output:
+
+green => [0 255 0]
+red => [255 0 0]
+```
+
+The order of iteration is not only unspecified, but since Go 1.0 it is explicitly randomized. This was done because developers relied on the implementation detail of stable ordering.
+
+The last important detail about maps is that they are not safe for concurrent updates. It is a problem only when some gorutine updates the map. If all goroutines just read from the map all is well. There was a lot of debate on this topic. Eventually the decision was to make map operations non-atomic for several reasons:
+
+- The overhead of making them atomic would hurt the performance of many programs
+- Often maps are part of a larger data structure that is already synchronized
+- It is not that difficult to add a lock around map operations when needed (famous last words)
 
 ### Interfaces
 
