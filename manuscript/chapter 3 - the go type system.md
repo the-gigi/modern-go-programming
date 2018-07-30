@@ -747,6 +747,80 @@ I'll talk a lot more about interfaces in `Chapter 10 - Advanced Object-Oriented 
 
 ### Structs
 
+Go structs are very interesting. They're kinda POD (plain old data) objects because they contain only fields and no methods, but actually they serve all the purposes of classes in classic object-oriented programming:
+
+- Encapsulation via private fields
+- Composition via named embedded structs
+- Inheritance via annoymous embedded structs (including multiple inheritance)
+- Polymorphism via concrete implementation of interfaces
+
+Structs can have methods it's jsut that the methods are not defined within the struct declaraton itself. Let's see some examples. Here is a very simple struct that just contains some data fields
+
+```
+type SomeData struct {
+	a int
+	b float
+	c []string
+	d map[int]string
+	e bool
+}
+```
+
+
+Here is a more elaborate example with embedded struct that shows a 3-level type hierarchy with implementation inheritence. There are a Grandpa and Grandma structs with corresponding ChopWood() and BakeApplePie() method. The Papa struct embedds anonymously the Grandpa and Grandma struct effectively inheriting their methods and adding a DanceDisco() method of his own. Finally, the Child struct embedds the Papa struct inheriting all its methods (including the ones inheritted from the grand parents). In the main function a Child struct is instantiated and invokes all the methods of the entire type hierarchy.
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+type Grandpa struct {
+}
+
+type Grandma struct {
+}
+
+type Papa struct {
+	Grandpa
+	Grandma
+}
+
+type Child struct {
+	Papa
+}
+
+func (g Grandpa) ChopWood() {
+	fmt.Println("Crunch!")
+}
+
+func (g Grandma) BakeApplePie() {
+	fmt.Println("Yum!")
+}
+
+func (p Papa) DanceDisco() {
+	fmt.Println("Ah, ha, ha, ha, stayin' alive, stayin' alive")
+}
+
+func (c Child) PlayMarioKart() {
+	fmt.Println("Ohhhh. Mamma Mia!")
+}
+
+
+func main() {
+	c := Child{}
+	c.ChopWood()
+	c.BakeApplePie()
+	c.DanceDisco()
+```
+
+For some reason the Go designers seem ashamed of the object-oriented capabilities of Go and even in the FAQ try to appologize for it :-)
+Check out https://golang.org/doc/faq#Is_Go_an_object-oriented_language
+
+They even go as far as claiming that Go doesn't have a type hierarchy, which I just demonstrated. I will discuss structs and object-oriented in depth in
+`Chapter 10 - Advanced Object-Oriented Design`.
+
 ### Functions
 
 ### Pointers
