@@ -823,6 +823,68 @@ They even go as far as claiming that Go doesn't have a type hierarchy, which I j
 
 ### Functions
 
+Functions are types in Go. The signature of the function determines its type. The signature is the ordered set of argument types and return types. Methods (functions with receivers) are also functions. You can assign a bound method to a function with the same signature (the receiver is not considerd part of the signature).
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+type Foo func()
+
+
+
+func foo1() {
+	fmt.Println("foo1")
+}
+
+func foo2() {
+	fmt.Println("foo2")
+}
+
+var foo3 = func() {
+	fmt.Println("foo3")
+}
+
+type S struct {
+	x int
+}
+
+func (s S) foo4() {
+	fmt.Println("foo4", s.x)
+}
+
+func main() {
+	var foo Foo
+	foo = foo1
+	foo()
+	foo = foo2
+	foo()
+	foo = foo3
+	foo()
+	foo3()
+	s := S{x: 5}
+	s.foo4()
+	foo = s.foo4
+	foo()
+}
+
+Output:
+
+foo1
+foo2
+foo3
+foo3
+foo4 5
+foo4 5
+```
+
+The bottom line is that functions are first class citizens in Go and can be used wherever any other type is used. This enables functionsl programming style where functions can take other functions as arguments and return functions.
+
+More on that in "Chapter 8 - Functional Programming in Go"
+
 ### Pointers
 
 Pointers in Go are not as prevalent as in C/C++. Their usage is sometimes masked becuase you don't need to invoke methods on object pointers with an arrow notation like in C/C++.
