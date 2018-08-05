@@ -184,6 +184,11 @@ https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2
 
 [How I use GOPATH with multiple workspaces](https://dmitri.shuralyov.com/blog/18)
 
+REVISE:
+
+https://golangci.com/#pricing (free for open source)
+
+
 ### Chapter 3
 
 

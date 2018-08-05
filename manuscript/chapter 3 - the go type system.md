@@ -885,14 +885,256 @@ The bottom line is that functions are first class citizens in Go and can be used
 
 More on that in "Chapter 8 - Functional Programming in Go"
 
-### Pointers
-
-Pointers in Go are not as prevalent as in C/C++. Their usage is sometimes masked becuase you don't need to invoke methods on object pointers with an arrow notation like in C/C++.
-
 
 ### Channels
 
-## Type Declaration and Aliasing		
+Channels are a pretty unique type. You can think of them as pipes that carry one type of value. You can send (write) values to a channel and you can receive (read from a channel). They are primarily useful for communicating between concurrent goroutines. We will discuss them in depth in "Chapter 13 - Concurrent Programming in Go". Channels have special syntactic support in Go with the <- operator used to sending values to a channel and the -> operator used to receive values from a channel. Channels can be unidirectional or bi-directional. Unidirectional channels can be used only to send to or recive from. Bi-directional channels canb e used to send and receive. Here is a quick demo to whet your appetite. I define a bi-directiona channel and two functions send() and receive() that take a uni-directional channel. The send() function can only send to the channel and the receive() function can only receive. Then the main function invokes the send() function as a go routine and the receive function as a regular function. Both the send and receive operatons on the channel block by default, so it's common practice to access channels in go routines. In this case, I populate the channel in go routines, while receiving in a blocking manner from main. As you can see the order of sends is not preserved.
+
+```
+package main
+
+import "fmt"
+
+func send (c chan<- int, v int) {
+	c <- v
+}
+
+func receive(c <-chan int) {
+	v := <- c
+	fmt.Println(v)
+}
+
+func main() {
+	c := make(chan int)
+
+	go send(c, 1)
+	go send(c,2)
+	go send(c,4)
+	go send(c,8)
+	receive(c)
+	receive(c)
+	receive(c)
+	go send(c,16)
+	receive(c)
+	receive(c)
+	go send(c,32)
+	receive(c)
+}
+
+Output:
+
+8
+2
+1
+4
+16
+32
+```
+
+### Pointers
+
+A pointer stores the address of a value. You can access the value by dereferencing the pointer. A dereferenced pointer to a value is identical to the value. You can read it and change it just like you can change the original value. A pointer type is  designated by a * and the type of the value it's pointing to. The & operator is used to take the address of a value. The following program demonstrates the syntax and semantics of pointers and simple values like ints.
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	x := 5
+	// p points to x
+	p := &x
+	// x and *p are identical
+	fmt.Println(p, x, *p)
+	x = 6
+
+	// modifying x directly *p is affected
+	fmt.Println(p, x, *p)
+
+	// modifying x through the pointer p
+	*p = 7
+	fmt.Println(p, x, *p)
+
+	y := 8
+	// p now points to y, *px = y
+	p = &y
+	fmt.Println(p, x, *p)
+}
+
+Output:
+
+0x10414020 5 5
+0x10414020 6 6
+0x10414020 7 7
+0x1041404c 7 8
+```
+
+Pointers can be used to point to any value including structs.
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+
+type Person struct {
+	firstName string
+	lastName  string
+	height    [2]int  // feet, inches
+}
+
+func main() {
+	x := Person{
+		firstName: "Gigi",
+		lastName: "Sayfan",
+		height: [2]int{5, 11},
+	}
+	p := &x
+	fmt.Println(p)
+	fmt.Println(x)
+	fmt.Println(*p)
+
+Output:
+
+&{Gigi Sayfan [5 11]}
+{Gigi Sayfan [5 11]}
+{Gigi Sayfan [5 11]}
+
+```
+
+To access a struct field you can dereference the pointer, but it is not necessary. Go lets you access it directly through the pointer:
+
+```
+	fmt.Println(x.firstName)
+	fmt.Println(p.firstName)
+	fmt.Println((*p).firstName)
+
+Output:
+
+Gigi
+Gigi
+Gigi
+```
+
+Note that if you choose to dereference the struct you must enclose it in parentheses before accessing fields.
+
+OK. But what are pointers good for? Go has strict pass by value semantics. When you pass a variable to a function the value is copied. If you want a function to modify an existing value you must pass it as a pointer. The called function will still get a copy of the pointer, but that copy of a pointer will point to the original value. Let's see it in action. First, passing a value as is to a function that changes it. The valu will change inside the function, but will not change the caller's value
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+
+func changeMe(x int) {
+	x = x + 77
+	fmt.Println("changeMe(): x is", x)
+}
+
+
+func main() {
+	x := 4
+	fmt.Println("main():     x is", x)
+	changeMe(x)
+	fmt.Println("main():     x is", x)
+}
+
+Output:
+
+main():     x is 4
+changeMe(): x is 81
+main():     x is 4
+```
+
+Now, let's pass it as a pointer. As you can see in the output the address of the pointer (&p) changes from 0xc42000c028 in main() to 0xc42000c028 in changeMe() because it's a copy. But the value of the pointer p is the same: 0xc42001c078. When changeMe() changes the dereferenced value, it impacts the value of x in main() too.
+
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+
+func changeMe(p *int) {
+	*p = *p + 77
+	fmt.Println("changeMe() - &p:", &p, "p:", p, "*p:", *p)
+}
+
+
+func main() {
+	x := 4
+	p := &x
+	fmt.Println("main()     - &p:", &p, "p:", p, " x:", x)
+	changeMe(p)
+	fmt.Println("main()     - &p:", &p, "p:", p, " x:", x)
+}
+
+Output:
+
+main()     - &p: 0xc42000c028 p: 0xc42001c078  x: 4
+changeMe() - &p: 0xc42000c038 p: 0xc42001c078 *p: 81
+main()     - &p: 0xc42000c028 p: 0xc42001c078  x: 81
+```
+
+The zero value of a pointer is nil of course:
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+
+func main() {
+	var p *int
+	fmt.Println(p)
+}
+
+Output:
+
+<nil>
+```
+
+Pointers are also useful when passing large values around between functions if you want to avoid copying even if the called function doesn't need to modify the value. In fact, in this case you should be very careful that the called function doesn't modify the value by accident and corrupt it fro the caller. Unfortunately, there is no const function arguments in Go like in C++, so passing a read-only value as a pointer is definitely risky and also may confuse readers that might expect the value to be modified since it is passed by pointer.
+
+
+Maps and Channels behave like reference types in the sense that when passed between functions they preserve their identity. This ia little trick of Go that under the covers actually passes a pointer. It is syntactically inconsistent and can confuse developers who may (justifiably) expect a copy of a map that they can modify inside a called function without any problem, but in practice will modify the caller's map:
+
+```
+func changeMe(m map[string]int) {
+	m["x"] = 7
+}
+
+
+func main() {
+	m := map[string]int{"x": 5}
+	fmt.Println("main()", m)
+	changeMe(m)
+	fmt.Println("main()", m)
+}
+
+Output:
+
+main() map[x:5]
+main() map[x:7]
+```
+
+I see it as a serious wart of the language that makes a special case that goes against the core principle of pass by value)
+
+
+## Type Declaration and Aliasing
+
+You've seen all
+
 
 ## Type Assertions
 

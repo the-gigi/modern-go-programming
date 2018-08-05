@@ -15,6 +15,7 @@
 - T and T* have different method sets
 - [goroutines and closures](http://localhost:8080/doc/faq#closures_and_goroutines)
 - i++ and i-- useless (just use for-range or i += 1) and confusing (it's a statement and not an expression like in C/C++)
+- Maps are actually pointers to maps
 
 ## Go 2.0
 
