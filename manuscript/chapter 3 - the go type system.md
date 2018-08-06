@@ -1133,9 +1133,85 @@ I see it as a serious wart of the language that makes a special case that goes a
 
 ## Type Declaration and Aliasing
 
-You've seen all
+In Go every declared type is different than all other types. For exmaple, in the following code type A and B are different even though B is literally defined as A.
 
+```
+package main
+
+type A struct {
+a int
+b string
+c bool
+}
+
+type B A
+
+
+func main() {
+	a := A{a: 1, b: "two", c: false}
+	b := B{a: 3, b: "six", c: true}
+
+	b = a
+}
+
+```
+
+Trying to build this program gives the following erro message:
+
+```
+manuscript/code/chapter-3/types/main.go:16:4: cannot use a (type A) as type B in assignment
+
+Compilation finished with exit code 2
+```
+
+But, we can make it work with the slightest change. Instead of declaring a new type B, let's make B a type alias of A. This means that B is just another name for A and not a distinct type. Instead of: `type B A` let's do `type B = A`.
+
+That's all it takes. Type aliasing was introduced in Golang 1.9. The official reason was enable refactoring and moving types incrementally across packages. I find it useful in its own right if you want to use a more meaningful name without creating a whole new type.
 
 ## Type Assertions
+
+Go is considered a static language, but you can still be pretty dynamic if you choose to. Interfaces give you the ability to pass around arbitrary values through the strict static type system of Go. But, eventually after your value reaches its destination where it's supposed to be used then you need a way to get back to the concrete type in order to access it or invoke its methods. That's where type assertion comes in. You can try to convert an interface to another type. This is similar to casting in C/C++. The syntax is a little wonky, but that's probably a good thing because often type assertions are an indication of a design problem. In the special cases where type assertions are hte correct solution it's fine to have somewhat unusual syntax to call attention to its usage. Alright, let's see type assertions in action. In the following code sample the foo() function accepts an empty interface and asserts it to be an int. The main() function calls foo() with the integer 3, which works just fine.
+
+```
+func foo(v interface{}) {
+	fmt.Println(v.(int))
+}
+
+
+func main() {
+	foo(3)
+}
+
+Output:
+
+3
+```
+
+But, if main() passes a string instead of an integer then the program still compiles because a string is type compatible with the expected empty interface, but at runtime the foo() function will panic when it tries to type assert the empty interface, which is a string to an int. The error mesage is very clear.
+
+```
+func foo(v interface{}) {
+	fmt.Println(v.(int))
+}
+
+
+func main() {
+	foo("a string")
+}
+
+Output:
+
+panic: interface conversion: interface {} is string, not int
+
+goroutine 1 [running]:
+main.foo(0x109d7e0, 0x10d01d0)
+	/Users/gigi.sayfan/git/modern-go-programming/manuscript/code/chapter-3/types/main.go:25 +0xbb
+main.main()
+	/Users/gigi.sayfan/git/modern-go-programming/manuscript/code/chapter-3/types/main.go:30 +0x39
+
+Process finished with exit code 2
+```
+
+Type assertions require that you know the actual type before asserting. For even more dynamic situations where you need to discover at runtime the actual type Go provides reflection capabilities.
 
 ## Reflection
