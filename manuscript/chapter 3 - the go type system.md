@@ -1170,7 +1170,7 @@ That's all it takes. Type aliasing was introduced in Golang 1.9. The official re
 
 ## Type Assertions
 
-Go is considered a static language, but you can still be pretty dynamic if you choose to. Interfaces give you the ability to pass around arbitrary values through the strict static type system of Go. But, eventually after your value reaches its destination where it's supposed to be used then you need a way to get back to the concrete type in order to access it or invoke its methods. That's where type assertion comes in. You can try to convert an interface to another type. This is similar to casting in C/C++. The syntax is a little wonky, but that's probably a good thing because often type assertions are an indication of a design problem. In the special cases where type assertions are hte correct solution it's fine to have somewhat unusual syntax to call attention to its usage. Alright, let's see type assertions in action. In the following code sample the foo() function accepts an empty interface and asserts it to be an int. The main() function calls foo() with the integer 3, which works just fine.
+Go is considered a static language, but you can still be pretty dynamic if you choose to. Interfaces give you the ability to pass around arbitrary values through the strict static type system of Go. But, eventually after your value reaches its destination where it's supposed to be used then you need a way to get back to the concrete type in order to access it or invoke its methods. That's where type assertion comes in. You can try to convert an interface to another type. This is similar to casting in C/C++. The syntax is a little wonky, but that's probably a good thing because often type assertions are an indication of a design problem. In the special cases where type assertions are the correct solution it's fine to have somewhat unusual syntax to call attention to its usage. Alright, let's see type assertions in action. In the following code sample the foo() function accepts an empty interface and asserts it to be an int. The main() function calls foo() with the integer 3, which works just fine.
 
 ```
 func foo(v interface{}) {
@@ -1187,7 +1187,7 @@ Output:
 3
 ```
 
-But, if main() passes a string instead of an integer then the program still compiles because a string is type compatible with the expected empty interface, but at runtime the foo() function will panic when it tries to type assert the empty interface, which is a string to an int. The error mesage is very clear.
+But, if main() passes a string instead of an integer then the program still compiles because a string is type compatible with the expected empty interface, but at runtime the foo() function will panic when it tries to type assert the empty interface, which is a string to an int. The error message is very clear.
 
 ```
 func foo(v interface{}) {
@@ -1212,6 +1212,40 @@ main.main()
 Process finished with exit code 2
 ```
 
-Type assertions require that you know the actual type before asserting. For even more dynamic situations where you need to discover at runtime the actual type Go provides reflection capabilities.
+
+Type assertions require that you know the actual type before asserting. If you want to try several alternatives panicing on the first try is not an option. Luckily (or by design), you can test if an assertion succeeded by checking a second optional bool return value. If you do then Go will not panic when a type assertion fails.
+
+```
+func foo(v interface{}) {
+	ii, ok := v.(int)
+	if ok {
+		fmt.Println(ii)
+		return
+	}
+
+	ss, ok := v.(string)
+	if ok {
+		fmt.Println(ss)
+		return
+	}
+
+	fmt.Println("Unknown type for value:", v)
+
+}
+
+func main() {
+	foo(4)
+	foo("a string")
+	foo([]bool{true, false})
+}
+
+Output:
+
+4
+a string
+Unknown type for value: [true false]
+```
+
+For even more dynamic situations where you need to discover at runtime the actual type Go provides reflection capabilities.
 
 ## Reflection

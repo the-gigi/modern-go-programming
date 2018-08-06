@@ -20,10 +20,34 @@ import "fmt"
 //	fmt.Println(b)
 //}
 
+//func foo(v interface{}) {
+//	fmt.Println(v.(int))
+//}
+//
+//
+//func main() {
+//	foo("a string")
+//}
+
 func foo(v interface{}) {
-	fmt.Println(v.(int))
+	ii, ok := v.(int)
+	if ok {
+		fmt.Println(ii)
+		return
+	}
+
+	ss, ok := v.(string)
+	if ok {
+		fmt.Println(ss)
+		return
+	}
+
+	fmt.Println("Unknown type for value:", v)
+
 }
 
 func main() {
+	foo(4)
 	foo("a string")
+	foo([]bool{true, false})
 }
