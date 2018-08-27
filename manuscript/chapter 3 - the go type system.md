@@ -1,8 +1,8 @@
 # The Go Type System
 
-In this chapter, I'll discuss the Go type system. IMO the type system of a language defines its spirit. Go is no different. The Go designers started at usual with C and then deviated and extended it in interesting ways. I'll often compare how things are in C/C++ vs/ Go. First, I'll cover all the types, then I'll discuss some type declaration mechanics and smantics and for the grand finale reflection!
+In this chapter, I'll discuss the Go type system. IMO the type system of a language defines its spirit. Go is no different. The Go designers started at usual with C and then deviated and extended it in interesting ways. I'll often compare how things are in C/C++ vs. Go. First, I'll cover all the types, then I'll discuss some type declaration mechanics and semantics and for the grand finale reflection!
 
-## Types	
+## Types
 
 ### Numeric types
 
@@ -26,11 +26,11 @@ complex64   the set of all complex numbers with float32 real and imaginary parts
 complex128  the set of all complex numbers with float64 real and imaginary parts
 ```
 
-The integral types can be signed or unsigned and all the types have their bitwidth as part of the type. For example int16, is a signed integer that is occupies 16 bits and therefore can hold any integer value between -32768 and 32767. The internal rerpesentatin is 2's complement. Floating point numbers are always signed and come in two flavors of 32-bit and 64-bit. Finally, complex numbers are made of two floating point numbers that correpond to the real and imaginary parts.
+The integral types can be signed or unsigned and all the types have their bit width as part of the type. For example int16, is a signed integer that is occupies 16 bits and therefore can hold any integer value between -32768 and 32767. The internal representation is 2's complement. Floating point numbers are always signed and come in two flavors of 32-bit and 64-bit. Finally, complex numbers are made of two floating point numbers that correspond to the real and imaginary parts.
 
 The decision to explicitly specify the exact size/range of values of each type is great for writing platform-agnostic programs. It's a hard lesson from C where `int` would mean different things on different platforms.
 
-That said, sometimes you're not worried about overflow and concatanation and you don't want to pontificate and choose between int8 and int16. Go accomodates you and provides 3 more liberal types whose size will depend on the specific implementation:
+That said, sometimes you're not worried about overflow and concatenation and you don't want to pontificate and choose between int8 and int16. Go accommodates you and provides 3 more liberal types whose size will depend on the specific implementation:
 
 ```
 uint     either 32 or 64 bits
@@ -54,21 +54,21 @@ manuscript/code/chapter-3/main.go:10:6: cannot use i8 (type int8) as type int16 
 Compilation finished with exit code 2
 ```
 
-Fixing it will require an explict conversion as in:
+Fixing it will require an explicit conversion as in:
 
 ```
 	var a int8 = 4
 	var b int16 = int16(a)
 ```
 
-Go being helpful as it is allow you to even drop the type from the declaration since the explict conversion is enough to tell the type. This means the above code can be written as:
+Go being helpful as it is allow you to even drop the type from the declaration since the explicit conversion is enough to tell the type. This means the above code can be written as:
 
 ```
 	var a int8 = 4
 	var b int16 = int16(a)
 ```
 
-Or even, more succintly as:
+Or even, more succinctly as:
 
 ```
 	var a int8 = 4
@@ -77,7 +77,7 @@ Or even, more succintly as:
 
 You should be very careful when converting between numeric types. Go will silently overflow large values when using an explicit conversion. Let's see some examples. The largest valid value for int8 is 127. Let's try to assign it 300 in different ways and see what happens.
 
-Directly assigning too large value resulta in a clear error (Good!):
+Directly assigning too large value results in a clear error (Good!):
 
 ```
 var x int8 = 300
@@ -89,7 +89,7 @@ manuscript/code/chapter-3/main.go:15:6: constant 300 overflows int8
 Compilation finished with exit code 2
 ```
 
-Trying to convery it at the point of assignment also results in error (Good!)
+Trying to convert it at the point of assignment also results in error (Good!)
 
 ```
 var x int8 = int8(300)
@@ -121,14 +121,14 @@ Output:
 44
 ```
 
-What just happend? First we assigned 300 to v. The type of v in this case is the platform-specific integer 32-bit or 64-bit. Then in the next line we explicitly converted v to int8. This conversion overflows and the result is that x contains 300 % 256 = 44 (the modules operator).
+What just happened? First we assigned 300 to v. The type of v in this case is the platform-specific integer 32-bit or 64-bit. Then in the next line we explicitly converted v to int8. This conversion overflows and the result is that x contains 300 % 256 = 44 (the modules operator).
 
-It might occur in real-wprld code more often then you think when serializing data using across machines or between different languages or in general when trying to optimize and conserve space.
+It might occur in real-world code more often then you think when serializing data using across machines or between different languages or in general when trying to optimize and conserve space.
 
 
 ### Boolean
 
-Go is strict with its booleans. There are two constatns `true` and `false` and they are the only valid values for a boolean variable.
+Go is strict with its booleans. There are two constants `true` and `false` and they are the only valid values for a boolean variable.
 Many other languages like C/C++, Python and Javascript automatically convert different expressions to bool. C/C++ treat 0 as false and everything else as true. Python is even crazier you can define for each type a special `__nozero__` (Python 2.x) or `__bool__` (Python 2.x) that returns True or False. In particular in Python None (the equivalent of Go's nil) and numeric values of 0 are considered as well empty strings and collections (sets, lists, dictionaries). Javascript has its own unintuitive definition of what's considered [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)
 
 In Go the value of an uninitialized boolean variable is false (its zero value). But you can't assign 0 or even nil to a boolean.
@@ -144,7 +144,7 @@ Boolean expressions and variables are used a lot in conditionals that we will ex
 
 ### Arrays and Slices
 
-Arrays are a bedrock data strucuture for any programming language. Go arrays have contiguous blocks of memory with fixed capacity that store elemnts of the same type. Arrays are one of a few generic types in Go. This means array elements can be of any type. Here is a little program that illustrates how to declare arrays:
+Arrays are a bedrock data structure for any programming language. Go arrays have contiguous blocks of memory with fixed capacity that store elements of the same type. Arrays are one of a few generic types in Go. This means array elements can be of any type. Here is a little program that illustrates how to declare arrays:
 
 ```
 package main
@@ -171,13 +171,13 @@ pies: [3.141592 3.141592653589793]
 bools: [true false true false false false]
 ```
 
-Note, that you have to specify the type of the element and the capacity of the array and it never changes. `[4]int32` is an arraty capable of of storing 4 int32 values. You can initialize an array when you declare as in [2]float64 {3.141592, math.Pi}. Elements that are not initialized explicitly will store the zero value for the element type (0 for numbers, false for boolean, etc).
+Note, that you have to specify the type of the element and the capacity of the array and it never changes. `[4]int32` is an array capable of of storing 4 int32 values. You can initialize an array when you declare as in [2]float64 {3.141592, math.Pi}. Elements that are not initialized explicitly will store the zero value for the element type (0 for numbers, false for boolean, etc).
 
 
 #### Initializing Arrays
 
 
-If you fully initialize an array you can let Go set the capacity for you, by using elipsis. Here is an example that also demonstrates the len() and cap() functions to determine the length anf capacity of an array.
+If you fully initialize an array you can let Go set the capacity for you, by using ellipsis. Here is an example that also demonstrates the len() and cap() functions to determine the length and capacity of an array.
 
 ```
 x := [...]int8{1, 2, 3, 4, 5}
@@ -246,7 +246,7 @@ s: [1 2 3] length: 3 capacity: 3
 s: [1 2 3 4] length: 4 capacity: 6
 ```
 
-Note that when I added another element to the slice the new backing array didn't have just enough capacity forthe new element (4), but actually doubled from 3 to 6 to accomodate appending a few more elements. Go uses heuristics to determine how to grow slices. But, you shouldn't rely on it because it's a pretty low-level implementation detail that can change. If you want predictability you can allocate a slice with predefined capacity using the `make()` function:
+Note that when I added another element to the slice the new backing array didn't have just enough capacity for the new element (4), but actually doubled from 3 to 6 to accommodate appending a few more elements. Go uses heuristics to determine how to grow slices. But, you shouldn't rely on it because it's a pretty low-level implementation detail that can change. If you want predictability you can allocate a slice with predefined capacity using the `make()` function:
 
 ```
 bytes := make([]byte, 100)
@@ -271,7 +271,7 @@ length: 0 capacity: 100
 #### Slice Type
 
 The type of slice depends only on its element type. So a slice of strings is always the same type as another slice of strings even
-if their backing arrays are of different types and thuse incompatible.
+if their backing arrays are of different types and thus incompatible.
 
 ```
 a2 := [2]string{"a", "b"}
@@ -292,7 +292,7 @@ Output:
 
 #### Appending, Copying and Removing Elements
 
-Slices are dynamic even if their backing arrays are immutable. The `append()` function can be used to append one or more elements to a slice as it is a variadic function (takes variable number of elements). The following snippet demnostrates different ways of appending elements (or slices) to a slice:
+Slices are dynamic even if their backing arrays are immutable. The `append()` function can be used to append one or more elements to a slice as it is a variadic function (takes variable number of elements). The following snippet demonstrates different ways of appending elements (or slices) to a slice:
 
 ```
 bytes := []byte{}
@@ -471,7 +471,7 @@ String literals are a sequence of UTF-8 characters enclosed in double quotes. Th
 \"   U+0022 double quote  (valid only within string literals)
 ```
 
-Sometimes you may want to store literal bytes directly in a string, regardless of escape sequences. You could escape each backslash, but that's tedious. A much better approach is to use raw strings that are enclosed in backticks.
+Sometimes you may want to store literal bytes directly in a string, regardless of escape sequences. You could escape each backslash, but that's tedious. A much better approach is to use raw strings that are enclosed in back ticks.
 
 Here is an example of a string with a \t (tab) escape sequence, which is represented once as is, then with the backslash escape, and then as a raw string:
 
@@ -553,7 +553,7 @@ Output:
 Go maps are associative arrays implemented as hash tables that store keys and values/ They are similar to the Python dictionary, C++ std::hash, Javascript object, C# System.Collections.Hashtable and Ruby Hash.
 
 
-The map is another special generic data structure in Go. Keys nust be of a [comparable type](https://golang.org/ref/spec#Comparison_operators) and values can be of any type. Here are a few examples:
+The map is another special generic data structure in Go. Keys must be of a [comparable type](https://golang.org/ref/spec#Comparison_operators) and values can be of any type. Here are a few examples:
 
 ```
 var m map[int]string // nil map, assignment will panic
@@ -611,7 +611,7 @@ blue: [0 0 0]
 
 This can obviously be a problem. If the zero value is a valid value (in this case 0,0,0 is the RGB for black) you can't tell when you get the zero value if the key you is really in the map or missing.
 
-For those ocassions, Go provides a multi-value return for the lookup where the second value if a boolean that is true if the key exist and false otherwise:
+For those occasions, Go provides a multi-value return for the lookup where the second value if a boolean that is true if the key exist and false otherwise:
 
 ```
 package main
@@ -659,7 +659,7 @@ red => [255 0 0]
 
 The order of iteration is not only unspecified, but since Go 1.0 it is explicitly randomized. This was done because developers relied on the implementation detail of stable ordering.
 
-The last important detail about maps is that they are not safe for concurrent updates. It is a problem only when some gorutine updates the map. If all goroutines just read from the map all is well. There was a lot of debate on this topic. Eventually the decision was to make map operations non-atomic for several reasons:
+The last important detail about maps is that they are not safe for concurrent updates. It is a problem only when some goroutine updates the map. If all goroutines just read from the map all is well. There was a lot of debate on this topic. Eventually the decision was to make map operations non-atomic for several reasons:
 
 - The overhead of making them atomic would hurt the performance of many programs
 - Often maps are part of a larger data structure that is already synchronized
@@ -667,7 +667,7 @@ The last important detail about maps is that they are not safe for concurrent up
 
 ### Interfaces
 
-An interface is a set of methods. Any object that implement these methods is said to satisfy the interface can be used anywhere the interface is needed. There is no "implements" or "extendeds" or sub-classing syntax. This quite unusual and maybe even unique in a strongly typed language. Here is a little program that demonstrates these concepts. The Drawer interface has a single method called Draw() that takes no arguments and returns a bool. The Account, Artist and PacifistGunslinger are structs that has a method that matches the Draw() method of the interface, so they are type compatible with it. In the main() function the drawers slice is initialized with instanced of all struct and then the code iterates twice through the drawers slice and invokes the Draw() method polymorphically.
+An interface is a set of methods. Any object that implement these methods is said to satisfy the interface can be used anywhere the interface is needed. There is no "implements" or "extends" or sub-classing syntax. This quite unusual and maybe even unique in a strongly typed language. Here is a little program that demonstrates these concepts. The Drawer interface has a single method called Draw() that takes no arguments and returns a bool. The Account, Artist and PacifistGunslinger are structs that has a method that matches the Draw() method of the interface, so they are type compatible with it. In the main() function the drawers slice is initialized with instanced of all struct and then the code iterates twice through the drawers slice and invokes the Draw() method polymorphically.
 
 ```
 package main
@@ -741,7 +741,7 @@ true
 false
 ```
 
-Note that Account, Artist and PacifictGunslinger didn't indicate in any way that they implement the interface. It all happens inplicitly. If we follow this logic and consider the empty interface "interface{}" then every object is compatible with it because each object implements all zero methods of this intterface :-). It may sound funny, but it's an important and useful part of the Go type system. The empty interface is similar to the void pointer in C/C++, System.Object in C# or java.lang.Object in Java in the sense that any object is compatible with it. But note that the C# and Java objects come with a lot of built-in functionality while the Go empty interface is really empty.
+Note that Account, Artist and PacifictGunslinger didn't indicate in any way that they implement the interface. It all happens implicitly. If we follow this logic and consider the empty interface "interface{}" then every object is compatible with it because each object implements all zero methods of this interface :-). It may sound funny, but it's an important and useful part of the Go type system. The empty interface is similar to the void pointer in C/C++, System.Object in C# or java.lang.Object in Java in the sense that any object is compatible with it. But note that the C# and Java objects come with a lot of built-in functionality while the Go empty interface is really empty.
 
 I'll talk a lot more about interfaces in `Chapter 10 - Advanced Object-Oriented Design`
 
@@ -751,10 +751,10 @@ Go structs are very interesting. They're kinda POD (plain old data) objects beca
 
 - Encapsulation via private fields
 - Composition via named embedded structs
-- Inheritance via annoymous embedded structs (including multiple inheritance)
+- Inheritance via anonymous embedded structs (including multiple inheritance)
 - Polymorphism via concrete implementation of interfaces
 
-Structs can have methods it's jsut that the methods are not defined within the struct declaraton itself. Let's see some examples. Here is a very simple struct that just contains some data fields
+Structs can have methods it's just that the methods are not defined within the struct declaration itself. Let's see some examples. Here is a very simple struct that just contains some data fields
 
 ```
 type SomeData struct {
@@ -767,7 +767,7 @@ type SomeData struct {
 ```
 
 
-Here is a more elaborate example with embedded struct that shows a 3-level type hierarchy with implementation inheritence. There are a Grandpa and Grandma structs with corresponding ChopWood() and BakeApplePie() method. The Papa struct embedds anonymously the Grandpa and Grandma struct effectively inheriting their methods and adding a DanceDisco() method of his own. Finally, the Child struct embedds the Papa struct inheriting all its methods (including the ones inheritted from the grand parents). In the main function a Child struct is instantiated and invokes all the methods of the entire type hierarchy.
+Here is a more elaborate example with embedded struct that shows a 3-level type hierarchy with implementation inheritance. There are a Grandpa and Grandma structs with corresponding ChopWood() and BakeApplePie() method. The Papa struct embeds anonymously the Grandpa and Grandma struct effectively inheriting their methods and adding a DanceDisco() method of his own. Finally, the Child struct embeds the Papa struct inheriting all its methods (including the ones inherited from the grand parents). In the main function a Child struct is instantiated and invokes all the methods of the entire type hierarchy.
 
 ```
 package main
@@ -815,7 +815,7 @@ func main() {
 	c.DanceDisco()
 ```
 
-For some reason the Go designers seem ashamed of the object-oriented capabilities of Go and even in the FAQ try to appologize for it :-)
+For some reason the Go designers seem ashamed of the object-oriented capabilities of Go and even in the FAQ try to apologize for it :-)
 Check out https://golang.org/doc/faq#Is_Go_an_object-oriented_language
 
 They even go as far as claiming that Go doesn't have a type hierarchy, which I just demonstrated. I will discuss structs and object-oriented in depth in
@@ -823,7 +823,7 @@ They even go as far as claiming that Go doesn't have a type hierarchy, which I j
 
 ### Functions
 
-Functions are types in Go. The signature of the function determines its type. The signature is the ordered set of argument types and return types. Methods (functions with receivers) are also functions. You can assign a bound method to a function with the same signature (the receiver is not considerd part of the signature).
+Functions are types in Go. The signature of the function determines its type. The signature is the ordered set of argument types and return types. Methods (functions with receivers) are also functions. You can assign a bound method to a function with the same signature (the receiver is not considered part of the signature).
 
 ```
 package main
@@ -888,7 +888,7 @@ More on that in "Chapter 8 - Functional Programming in Go"
 
 ### Channels
 
-Channels are a pretty unique type. You can think of them as pipes that carry one type of value. You can send (write) values to a channel and you can receive (read from a channel). They are primarily useful for communicating between concurrent goroutines. We will discuss them in depth in "Chapter 13 - Concurrent Programming in Go". Channels have special syntactic support in Go with the <- operator used to sending values to a channel and the -> operator used to receive values from a channel. Channels can be unidirectional or bi-directional. Unidirectional channels can be used only to send to or recive from. Bi-directional channels canb e used to send and receive. Here is a quick demo to whet your appetite. I define a bi-directiona channel and two functions send() and receive() that take a uni-directional channel. The send() function can only send to the channel and the receive() function can only receive. Then the main function invokes the send() function as a go routine and the receive function as a regular function. Both the send and receive operatons on the channel block by default, so it's common practice to access channels in go routines. In this case, I populate the channel in go routines, while receiving in a blocking manner from main. As you can see the order of sends is not preserved.
+Channels are a pretty unique type. You can think of them as pipes that carry one type of value. You can send (write) values to a channel and you can receive (read from a channel). They are primarily useful for communicating between concurrent goroutines. We will discuss them in depth in "Chapter 13 - Concurrent Programming in Go". Channels have special syntactic support in Go with the <- operator used to sending values to a channel and the -> operator used to receive values from a channel. Channels can be unidirectional or bi-directional. Unidirectional channels can be used only to send to or receive from. Bi-directional channels can be used to send and receive. Here is a quick demo to whet your appetite. I define a bi-directional channel and two functions send() and receive() that take a uni-directional channel. The send() function can only send to the channel and the receive() function can only receive. Then the main function invokes the send() function as a go routine and the receive function as a regular function. Both the send and receive operations on the channel block by default, so it's common practice to access channels in go routines. In this case, I populate the channel in go routines, while receiving in a blocking manner from main. As you can see the order of sends is not preserved.
 
 ```
 package main
@@ -1022,7 +1022,7 @@ Gigi
 
 Note that if you choose to dereference the struct you must enclose it in parentheses before accessing fields.
 
-OK. But what are pointers good for? Go has strict pass by value semantics. When you pass a variable to a function the value is copied. If you want a function to modify an existing value you must pass it as a pointer. The called function will still get a copy of the pointer, but that copy of a pointer will point to the original value. Let's see it in action. First, passing a value as is to a function that changes it. The valu will change inside the function, but will not change the caller's value
+OK. But what are pointers good for? Go has strict pass by value semantics. When you pass a variable to a function the value is copied. If you want a function to modify an existing value you must pass it as a pointer. The called function will still get a copy of the pointer, but that copy of a pointer will point to the original value. Let's see it in action. First, passing a value as is to a function that changes it. The value will change inside the function, but will not change the caller's value
 
 ```
 package main
@@ -1107,7 +1107,7 @@ Output:
 Pointers are also useful when passing large values around between functions if you want to avoid copying even if the called function doesn't need to modify the value. In fact, in this case you should be very careful that the called function doesn't modify the value by accident and corrupt it fro the caller. Unfortunately, there is no const function arguments in Go like in C++, so passing a read-only value as a pointer is definitely risky and also may confuse readers that might expect the value to be modified since it is passed by pointer.
 
 
-Maps and Channels behave like reference types in the sense that when passed between functions they preserve their identity. This ia little trick of Go that under the covers actually passes a pointer. It is syntactically inconsistent and can confuse developers who may (justifiably) expect a copy of a map that they can modify inside a called function without any problem, but in practice will modify the caller's map:
+Maps and Channels behave like reference types in the sense that when passed between functions they preserve their identity. This is a little trick of Go that under the covers actually passes a pointer. It is syntactically inconsistent and can confuse developers who may (justifiably) expect a copy of a map that they can modify inside a called function without any problem, but in practice will modify the caller's map:
 
 ```
 func changeMe(m map[string]int) {
@@ -1133,7 +1133,7 @@ I see it as a serious wart of the language that makes a special case that goes a
 
 ## Type Declaration and Aliasing
 
-In Go every declared type is different than all other types. For exmaple, in the following code type A and B are different even though B is literally defined as A.
+In Go every declared type is different than all other types. For example, in the following code type A and B are different even though B is literally defined as A.
 
 ```
 package main
@@ -1156,7 +1156,7 @@ func main() {
 
 ```
 
-Trying to build this program gives the following erro message:
+Trying to build this program gives the following error message:
 
 ```
 manuscript/code/chapter-3/types/main.go:16:4: cannot use a (type A) as type B in assignment
@@ -1213,7 +1213,7 @@ Process finished with exit code 2
 ```
 
 
-Type assertions require that you know the actual type before asserting. If you want to try several alternatives panicing on the first try is not an option. Luckily (or by design), you can test if an assertion succeeded by checking a second optional bool return value. If you do then Go will not panic when a type assertion fails.
+Type assertions require that you know the actual type before asserting. If you want to try several alternatives then panicing on the first try is not an option. Luckily (or by design), you can test if an assertion succeeded by checking a second optional bool return value. If you do then Go will not panic when a type assertion fails.
 
 ```
 func foo(v interface{}) {
@@ -1249,3 +1249,93 @@ Unknown type for value: [true false]
 For even more dynamic situations where you need to discover at runtime the actual type Go provides reflection capabilities.
 
 ## Reflection
+
+Let's reflect about reflection. Reflection lets you operate on unknown types. What? That's right. Sometimes, you may have some generic code that operates on arbitrary types. The `fmt.Println()`` function is a great example. It accepts arbitrary types and prints them to the console. Its signature is:
+
+```
+func Println(a ...interface{}) (n int, err error) {
+
+}
+```
+
+So, the type of the arguments is the empty interface, which means it can be anything. The implementation uses reflection to figure out the actual type of its arguments and how to they should be printed to the console.
+
+
+When should you use reflection? Not very often. In most cases, operating through an interface is good enough. That's the whole point of interfaces to provide a set of methods that are stable across many types). But, often when serializing and deserializing objects from a file or over a network you must use reflection. Still, in most cases you should prefer using a library that already does the heavy lifting using reflection for you.
+
+Let's see why you should avoid writing reflection doe yourself if possible.
+
+
+### Values, Types, Kinds and Elements
+
+The conceptual model of reflection is built on values, types, kinds and elements. A reflection value encapsulates any Go value. You can create a value using an interface. A value has a type and a kind. The type of a value is its Go type. It can be a built-in type like `string` or it can be a defined type. The kind of a value is the type of the type. For example if you defined a struct type called `Foo` and created a instance of it `foo`. Then, the type of `foo` is `Foo` and its kind is `struct`. Now, here is the crazy part about reflection - `reflect.Value` has many methods, but depending on the kind of object the value represents only some of these methods are valid. For example, the Len() method is valid only for these kinds: Array, Chan, Map, Slice, or String. If the value contains another kind of object it will panic. That's right, no second chances. No error. Just panic. The same goes for any other method. That makes working with reflection values pretty annoying. You must use big switches on the kind to know, which methods you're allowed to call. Here is the implementation of the Len() method:
+
+```
+func (v Value) Len() int {
+	k := v.kind()
+	switch k {
+	case Array:
+		tt := (*arrayType)(unsafe.Pointer(v.typ))
+		return int(tt.len)
+	case Chan:
+		return chanlen(v.pointer())
+	case Map:
+		return maplen(v.pointer())
+	case Slice:
+		// Slice is bigger than a word; assume flagIndir.
+		return (*sliceHeader)(v.ptr).Len
+	case String:
+		// String is bigger than a word; assume flagIndir.
+		return (*stringHeader)(v.ptr).Len
+	}
+	panic(&ValueError{"reflect.Value.Len", v.kind()})
+}
+```
+
+But, that's not all. If the value contains a Pointer or Interface you must dereference it using `Elem()`, which returns a `reflect.Value` for the actual object, before you can work with it. The following code demonstrates the hoops you need to go through when using reflection:
+
+
+```
+package main
+
+import (
+	"reflect"
+	"fmt"
+)
+
+type Foo struct {
+	Number int
+	Text   string
+}
+
+func main() {
+	f := Foo{Number: 4, Text: "Four"}
+
+	m := map[int]*Foo{77: &f, 88: &f}
+	mv := reflect.ValueOf(m)
+	fmt.Println("type of m:", mv.Type())
+	fmt.Println("kind of m:", mv.Kind())
+	fmt.Println("key type of m:", mv.Type().Key())
+
+	// Get the Foo pointer value
+	elem := reflect.ValueOf(m[77])
+	fmt.Println("element:", elem)
+
+	// Dereference the Foo pointer to a Foo value
+	foo := elem.Elem()
+	for i := 0; i < foo.NumField(); i++ {
+		fmt.Println("Field", i, foo.Field(i))
+	}
+}
+
+Output:
+
+type of m: map[int]*main.Foo
+kind of m: map
+key type of m: int
+element: &{4 Four}
+Field 0 4
+Field 1 Four
+```
+
+There is much more to reflection including channels, functions and methods, but my advise is to stay clear of it. I recently wrote a dynamic yet strongly typed configuration system that populated arbitrary Go structs from hierarchical configuration in AWS parameter store. I had to use reflection to make it work according to the requirements and it wasn't fun.
