@@ -8,7 +8,13 @@ This chapter means business. I kid you not! You will get to see all the building
  - Controlling the flow of your program with conditions and switching
  - Looping and Iterations
 	
-## Naming and visibility
+## Naming and Visibility
+
+Go takes the stance that identifiers starting with a Capital letter are public (exported) and identifiers starting with a lowercase letter are private. That rule applies to constants, variables, types, functions, interfaces and what have you. Identifiers in Go can use any UTF-8 letter or digit and must start with a letter. However, public identifiers must start with an English capital letter. This breaks somewhat the internationality of Go, since English gets this privileged status regarding public identifiers.
+
+```
+```
+
 
 ## Variables, Pointers and Assignment
 
@@ -16,4 +22,18 @@ This chapter means business. I kid you not! You will get to see all the building
 
 ## Control Flow
 
+### If-else
+
+### No ternary operator
+
+### Switch
+
+### The Mighty For Loop
+
 ## Iterations
+
+### Iterating Over Arrays and Slices
+
+### Iterating Over Maps
+
+### Iterating Over Channels

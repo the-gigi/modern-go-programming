@@ -211,9 +211,9 @@ Go even has a [community outreach working group](https://blog.golang.org/communi
 
 ## Delinkcious
 
-Let's take a quick break from Go and talk about Delinkcios - our sample application. Dlinkcious is a [Delicious](https://en.wikipedia.org/wiki/Delicious_(website)) wannabe. If you've lived under a rock then Delicious is/was a successful link management service that exchanges hands a few times and is eventually purchased by Pinboard, which runs a similar service and intends to shutdown Delicious soon.
+Let's take a quick break from Go and talk about Delinkcios - our sample application. Delinkcious is a [Delicious](https://en.wikipedia.org/wiki/Delicious_(website)) wannabe. If you've lived under a rock then Delicious is/was a successful link management service that exchanges hands a few times and is eventually purchased by Pinboard, which runs a similar service and intends to shutdown Delicious soon.
 
-Anyway, Delinkcious will let users you store URLs to cool places on the web, tag them and then query them in various ways. Throughout the book I will use Delikcious as a platform to demonstrate many Go concepts and features in the content of a real-world application. 
+Anyway, Delinkcious will let users store URLs to cool places on the web, tag them and then query them in various ways. Throughout the book I will use Delikcious as a platform to demonstrate many Go concepts and features in the content of a real-world application.
 
 ## Summary
 

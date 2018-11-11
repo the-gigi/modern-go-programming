@@ -3,6 +3,12 @@
 ## pprof
 ## cpu profiling
 ## memory profiling
+
+### understanding memory management in Go
+
+https://about.sourcegraph.com/go/gophercon-2018-allocator-wrestling/
+
+
 ## tracing concurrent programs
 
 https://making.pusher.com/go-tool-trace/
