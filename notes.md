@@ -161,8 +161,6 @@ func main() {
 }
 ```
 	
-	
-[Should Go 2.0 support Generics](https://dave.cheney.net/2017/07/22/should-go-2-0-support-generics)
 
 [Simplicity Debt Redux](https://dave.cheney.net)
 
